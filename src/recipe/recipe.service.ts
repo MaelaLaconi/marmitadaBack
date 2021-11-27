@@ -11,6 +11,6 @@ export class RecipeService {
     this._recipes =[].concat(RECIPES);
   }
   
-  findFirst = (): Observable<Recipe> =>
+  findFirst = (): Observable<Recipe | void> =>
     of(this._recipes[0]);
 }

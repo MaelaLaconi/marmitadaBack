@@ -5,5 +5,5 @@ swagger:
   title: MarmiTada website
   description: The TadaReceipes API description
   version: 0.1
-  tag: recipes
+  tag: recipe
   path: documentation

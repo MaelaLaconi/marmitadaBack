@@ -11,6 +11,10 @@ export class AuthorEntity {
     example: 'Giuseppe'
   })
   pseudo: string;
+  @Expose()
+  @Type(() => String)
   firstname?: string;
+  @Expose()
+  @Type(() => String)
   lastname?: string;
 }

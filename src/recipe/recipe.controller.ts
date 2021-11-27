@@ -2,9 +2,9 @@ import {ClassSerializerInterceptor, Controller, Get, UseInterceptors} from '@nes
 import {Observable} from "rxjs";
 import {Recipe} from "./recipe.type";
 import {RecipeService} from "./recipe.service";
-import {ApiOkResponse, ApiTags} from "@nestjs/swagger";
+import {ApiNoContentResponse, ApiOkResponse, ApiTags} from "@nestjs/swagger";
 import {HttpInterceptor} from "../interceptors/http.interceptor";
-import {RecipeEntity} from "../entities/recipe.entity";
+import {RecipeEntity} from "./entities/recipe.entity";
 
 @ApiTags('recipe')
 @Controller('recipe')
@@ -21,8 +21,9 @@ export class RecipeController {
     description: 'Return the first recipe',
     type: RecipeEntity
   })
+  @ApiNoContentResponse({description: 'There is no recipe here.'})
   @Get()
-  findFirst(): Observable<Recipe> {
+  findFirst(): Observable<Recipe | void> {
     return this._recipeService.findFirst();
   }
 }
