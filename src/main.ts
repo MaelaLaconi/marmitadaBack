@@ -8,6 +8,7 @@ import {
 import * as Config from 'config';
 import {AppConfig, SwaggerConfig} from './app.types';
 import {DocumentBuilder, SwaggerModule} from "@nestjs/swagger";
+import {RecipeModule} from "./recipe/recipe.module";
 
 async function bootstrap(config: AppConfig, swaggerConfig: SwaggerConfig) {
   // create NestJS application
@@ -33,7 +34,7 @@ async function bootstrap(config: AppConfig, swaggerConfig: SwaggerConfig) {
     .build();
     
   const apiDocument = SwaggerModule.createDocument(app, options, {
-    include: [AppModule/*TODO add the Module linked to the API*/],
+    include: [RecipeModule],
   })
   
   SwaggerModule.setup(swaggerConfig.path, app, apiDocument);
