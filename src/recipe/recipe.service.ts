@@ -12,6 +12,9 @@ export class RecipeService {
     this._recipes =[].concat(RECIPES);
   }
   
+  /**
+   * Return all the known recipes
+   */
   findAll = (): Observable<Recipe[] | void> =>
     of(this._recipes).pipe(
       map((_: Recipe[]) => (!!_ && !!_.length ? _ : undefined)),
