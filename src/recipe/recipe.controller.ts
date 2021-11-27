@@ -6,8 +6,8 @@ import {ApiNoContentResponse, ApiOkResponse, ApiTags} from "@nestjs/swagger";
 import {HttpInterceptor} from "../interceptors/http.interceptor";
 import {RecipeEntity} from "./entities/recipe.entity";
 
-@ApiTags('recipe')
-@Controller('recipe')
+@ApiTags('recipes')
+@Controller('recipes')
 @UseInterceptors(ClassSerializerInterceptor)
 @UseInterceptors(HttpInterceptor)
 export class RecipeController {
@@ -22,8 +22,21 @@ export class RecipeController {
     type: RecipeEntity
   })
   @ApiNoContentResponse({description: 'There is no recipe here.'})
-  @Get()
+  @Get('first')
   findFirst(): Observable<Recipe | void> {
     return this._recipeService.findFirst();
+  }
+  
+  @ApiOkResponse({
+    description: 'Return all the known recipes',
+    type: RecipeEntity,
+    isArray: true
+  })
+  @ApiNoContentResponse({
+    description: 'No recipes are in database'
+  })
+  @Get()
+  findAll(): Observable<Recipe[] | void> {
+    return this._recipeService.findAll();
   }
 }

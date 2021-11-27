@@ -8,13 +8,27 @@ export class AuthorEntity {
   @ApiProperty({
     name: 'pseudo',
     description: 'The author\'s pseudo',
-    example: 'Giuseppe'
+    example: 'Gius'
   })
   pseudo: string;
+  
   @Expose()
   @Type(() => String)
+  @ApiProperty({
+    name: 'firstname',
+    description: 'Firstname of the author',
+    example: 'Giuseppe',
+    required: false,
+  })
   firstname?: string;
+  
   @Expose()
   @Type(() => String)
+  @ApiProperty({
+    name: 'lastname',
+    description: 'Lastname of the author',
+    example: 'Russo',
+    required: false,
+  })
   lastname?: string;
 }

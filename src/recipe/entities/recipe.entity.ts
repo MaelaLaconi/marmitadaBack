@@ -25,11 +25,11 @@ export class RecipeEntity {
   
   @ApiProperty({
     name: 'author',
-    description: 'Author'
+    description: 'Author',
   })
   @Expose()
   @Type(() => AuthorEntity)
-  author: Author;
+  author: AuthorEntity;
   
   @ApiProperty({
     name: 'ingredients',
