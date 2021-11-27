@@ -1,6 +1,10 @@
 server:
   host: localhost
   port: 3000
+  cors:
+    - "http://0.0.0.0:4200"
+    - "http://127.0.0.1:4200"
+    - "http://localhost:4200"
 swagger:
   title: MarmiTada website
   description: The TadaReceipes API description
