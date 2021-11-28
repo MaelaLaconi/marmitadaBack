@@ -1,11 +1,12 @@
 import {
   ConflictException,
   Injectable,
-  NotFoundException,
+  NotFoundException, UnprocessableEntityException,
 } from '@nestjs/common';
 import { Recipe } from './recipe.type';
 import { RECIPES } from '../static/_recipes';
 import {
+  catchError,
   defaultIfEmpty,
   find,
   findIndex,
@@ -80,14 +81,16 @@ export class RecipeService {
    * @returns {Observable<RecipeEntity>}
    */
   findById = (id: string): Observable<RecipeEntity> =>
-    from(this._recipes).pipe(
-      find((_: Recipe) => _.id === id),
-      mergeMap((_: Recipe) =>
+    this._recipesDao.findById(id).pipe(
+      catchError( (e) =>
+        throwError(() => new UnprocessableEntityException(e.message)),
+      ),
+      mergeMap( (_: Recipe) =>
         !!_
           ? of(new RecipeEntity(_))
           : throwError(
-              () => new NotFoundException(`Recipe with id '${id} not found`),
-            ),
+            () =>new NotFoundException(`Recipe with id '${id}' not found`),
+          ),
       ),
     );
 

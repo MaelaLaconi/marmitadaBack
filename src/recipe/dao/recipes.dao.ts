@@ -4,6 +4,7 @@ import {Recipe, RecipeDocument} from "../schemas/recipe.schema";
 import {Model} from "mongoose";
 import {defaultIfEmpty, from, Observable} from "rxjs";
 import {filter, map} from "rxjs/operators";
+import {RecipeEntity} from "../entities/recipe.entity";
 
 @Injectable()
 export class RecipesDao {
@@ -31,4 +32,17 @@ export class RecipesDao {
       defaultIfEmpty(undefined),
     );
   
+  /**
+   * Returns the recipe with the corresponding id
+   *
+   * @param {string} id of the recipe
+   *
+   * @returns {Observable<RecipeEntity>}
+   */
+  findById = (id: string): Observable<RecipeEntity> =>
+    from(this._recipeModel.findById(id)).pipe(
+      filter((doc: RecipeDocument) => !! doc),
+      map((doc: RecipeDocument) => doc.toJSON()),
+      defaultIfEmpty(undefined),
+    );
 }
