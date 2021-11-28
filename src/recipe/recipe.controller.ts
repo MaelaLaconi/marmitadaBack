@@ -108,7 +108,7 @@ export class RecipeController {
   /**
    * Handler to answer to DELETE /recipes/:id route
    *
-   * @param id
+   * @param {HandlerParams}
    *
    * @returns Observable<void>
    */
@@ -130,8 +130,8 @@ export class RecipeController {
     allowEmptyValue: false,
   })
   @Delete(':id')
-  delete(@Param('id') id: string): Observable<void> {
-    return this._recipeService.delete(id);
+  delete(@Param() params: HandlerParams): Observable<void> {
+    return this._recipeService.delete(params.id);
   }
 
   /**

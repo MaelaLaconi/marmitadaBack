@@ -49,7 +49,7 @@ export class RecipeService {
       ),
       map((_: R) => new RecipeEntity(_)),
     );
-  
+
   /**
    * Return all the recipes in database
    *
@@ -91,17 +91,34 @@ export class RecipeService {
       ),
     );
 
+
+
   /**
-   * Deletes one recipe in cookbook list
+   * Deletes one recipe in people list
    *
    * @param {string} id of the recipe to delete
    *
    * @returns {Observable<void>}
    */
+  /**
+   * Deletes one person in people list
+   *
+   * @param {string} id of the person to delete
+   *
+   * @returns {Observable<void>}
+   */
   delete = (id: string): Observable<void> =>
-    this._findRecipesIndexOfList(id).pipe(
-      tap((_: number) => this._recipes.splice(_, 1)),
-      map(() => undefined),
+    this._recipesDao.findByIdAndRemove(id).pipe(
+      catchError((e) =>
+        throwError(() => new UnprocessableEntityException(e.message)),
+      ),
+      mergeMap((_: R) =>
+        !!_
+          ? of(undefined)
+          : throwError(
+            () => new NotFoundException(`Person with id '${id}' not found`),
+          ),
+      ),
     );
 
   /**
@@ -155,7 +172,7 @@ export class RecipeService {
       tap((index: number) => Object.assign(this._recipes[index], recipe)),
       map((index: number) => this._recipes[index]),
     );
-  
+
   private _addRecipe = (recipe: CreateRecipeDto): Observable<RecipeEntity> =>
     of({
       ...recipe,
@@ -164,7 +181,7 @@ export class RecipeService {
       tap((_: Recipe) => (this._recipes = this._recipes.concat(_))),
       map((_: Recipe) => new RecipeEntity(_)),
     );
-  
+
   /**
    * Creates a new id
    *
