@@ -138,15 +138,15 @@ export class RecipeController {
    * Handler to answer to /recipes route
    *
    * @param id
-   * @param updateRecipenDto
+   * @param updateRecipeDto
    *
-   * @returns Observable<Recipe>
+   * @returns Observable<RecipeEntity>
    */
   @Put(':id')
   update(
     @Param('id') id: string,
     @Body() updateRecipeDto: UpdateRecipeDto,
-  ): Observable<Recipe> {
+  ): Observable<RecipeEntity> {
     return this._recipeService.update(id, updateRecipeDto);
   }
   

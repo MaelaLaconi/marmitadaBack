@@ -87,7 +87,7 @@ export class RecipeService {
     );
 
   /**
-   * Deletes one person in people list
+   * Deletes one recipe in people list
    *
    * @param {string} id of the recipe to delete
    *
@@ -100,9 +100,9 @@ export class RecipeService {
     );
 
   /**
-   * Finds index of array for current person
+   * Finds index of array for current recipe
    *
-   * @param {string} id of the person to find
+   * @param {string} id of the recipe to find
    *
    * @returns {Observable<number>}
    *
@@ -121,9 +121,9 @@ export class RecipeService {
     );
 
   /**
-   * Update a person in recipe list
+   * Update a recipe in recipe list
    *
-   * @param {string} id of the person to update
+   * @param {string} id of the recipe to update
    * @param recipe data to update
    *
    * @returns {Observable<RecipeEntity>}
