@@ -167,10 +167,10 @@ export class RecipeController {
   @ApiBody({ description: 'Payload to update a recipe', type: UpdateRecipeDto })
   @Put(':id')
   update(
-    @Param('id') id: string,
-    @Body() updateRecipeDto: UpdateRecipeDto,
+    @Param() params: HandlerParams,
+    @Body() updatePersonDto: UpdateRecipeDto,
   ): Observable<RecipeEntity> {
-    return this._recipeService.update(id, updateRecipeDto);
+    return this._recipeService.update(params.id, updatePersonDto);
   }
   
   @ApiCreatedResponse({
@@ -191,4 +191,6 @@ export class RecipeController {
   create(@Body() recipe: CreateRecipeDto): Observable<RecipeEntity> {
     return this._recipeService.create(recipe);
   }
+
+
 }

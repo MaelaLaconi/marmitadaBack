@@ -143,35 +143,34 @@ export class RecipeService {
     );
 
   /**
-   * Update a recipe in recipe list
+   * Update a recipe in people list
    *
-   * @param {string} id of the recipe to update
-   * @param recipe data to update
+   * @param {string} id of the person to update
+   * @param person data to update
    *
-   * @returns {Observable<RecipeEntity>}
+   * @returns {Observable<PersonEntity>}
    */
   update = (id: string, recipe: UpdateRecipeDto): Observable<RecipeEntity> =>
-    from(this._recipes).pipe(
-      find(
-        (_: Recipe) =>
-          /*_.author.pseudo.toLowerCase() ===
-            recipe.author.pseudo.toLowerCase() &&*/
-          _.name.toLowerCase() === recipe.name.toLowerCase() &&
-          _.id.toLowerCase() !== id.toLowerCase(),
-      ),
-      mergeMap((_: Recipe) =>
-        !!_
+    this._recipesDao.findByIdAndUpdate(id, recipe).pipe(
+      catchError((e) =>
+        e.code === 11000
           ? throwError(
-              () =>
-                new ConflictException(
-                  `Recipe with pseudo '${recipe.author.pseudo}' and name '${recipe.name}' already exists`,
-                ),
-            )
-          : this._findRecipesIndexOfList(id),
+            () =>
+              new ConflictException(
+                `People with pseudo '${recipe.author.pseudo}' already exists`,
+              ),
+          )
+          : throwError(() => new UnprocessableEntityException(e.message)),
       ),
-      tap((index: number) => Object.assign(this._recipes[index], recipe)),
-      map((index: number) => this._recipes[index]),
+      mergeMap((_: R) =>
+        !!_
+          ? of(new RecipeEntity(_))
+          : throwError(
+            () => new NotFoundException(`People with id '${id}' not found`),
+          ),
+      ),
     );
+
 
   private _addRecipe = (recipe: CreateRecipeDto): Observable<RecipeEntity> =>
     of({

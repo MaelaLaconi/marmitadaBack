@@ -6,6 +6,7 @@ import { defaultIfEmpty, from, Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { RecipeEntity } from '../entities/recipe.entity';
 import { CreateRecipeDto } from '../dto/create-recipe.dto';
+import { UpdateRecipeDto } from "../dto/update-recipe.dto";
 
 @Injectable()
 export class RecipesDao {
@@ -68,6 +69,29 @@ export class RecipesDao {
    */
   findByIdAndRemove = (id: string): Observable<Recipe | void> =>
     from(this._recipeModel.findByIdAndRemove(id)).pipe(
+      filter((doc: RecipeDocument) => !!doc),
+      map((doc: RecipeDocument) => doc.toJSON()),
+      defaultIfEmpty(undefined),
+    );
+
+  /**
+   * Update a person in recipe list
+   *
+   * @param {string} id
+   * @param {UpdatePersonDto} person
+   *
+   * @return {Observable<Person | void>}
+   */
+  findByIdAndUpdate = (
+    id: string,
+    recipe: UpdateRecipeDto,
+  ): Observable<Recipe | void> =>
+    from(
+      this._recipeModel.findByIdAndUpdate(id, recipe, {
+        new: true,
+        runValidators: true,
+      }),
+    ).pipe(
       filter((doc: RecipeDocument) => !!doc),
       map((doc: RecipeDocument) => doc.toJSON()),
       defaultIfEmpty(undefined),
