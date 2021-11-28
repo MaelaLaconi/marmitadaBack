@@ -6,6 +6,15 @@ import {AuthorEntity} from "./author.entity";
 @Exclude()
 export class RecipeEntity {
   @ApiProperty({
+    name: 'id',
+    description: 'Unique id for the recipe',
+    example: '5763cd4d9d2a4f259b53c901'
+  })
+  @Expose()
+  @Type(() => String)
+  id: string;
+  
+  @ApiProperty({
     name: 'name',
     description: 'Name of the dish made with this recipe',
     example: 'Tadaramisu'
