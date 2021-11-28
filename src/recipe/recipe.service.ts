@@ -66,7 +66,7 @@ export class RecipeService {
     );
 
   /**
-   * Deletes one person in people list
+   * Deletes one recipe in cookbook list
    *
    * @param {string} id of the recipe to delete
    *
@@ -79,9 +79,9 @@ export class RecipeService {
     );
 
   /**
-   * Finds index of array for current person
+   * Finds index of array for current recipe
    *
-   * @param {string} id of the person to find
+   * @param {string} id of the recipe to find
    *
    * @returns {Observable<number>}
    *
@@ -100,12 +100,12 @@ export class RecipeService {
     );
 
   /**
-   * Update a person in recipe list
+   * Update a recipe in recipe list
    *
-   * @param {string} id of the person to update
-   * @param person data to update
+   * @param {string} id of the recipe to update
+   * @param recipe data to update
    *
-   * @returns {Observable<Person>}
+   * @returns {Observable<Recipe>}
    */
   update = (id: string, recipe: UpdateRecipeDto): Observable<Recipe> =>
     from(this._recipes).pipe(

@@ -133,7 +133,7 @@ export class RecipeController {
    * Handler to answer to /recipes route
    *
    * @param id
-   * @param updateRecipenDto
+   * @param updateRecipeDto
    *
    * @returns Observable<Recipe>
    */
