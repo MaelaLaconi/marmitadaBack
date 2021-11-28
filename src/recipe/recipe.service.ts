@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { Recipe } from './recipe.type';
 import { RECIPES } from '../static/_recipes';
 import {
@@ -12,6 +16,7 @@ import {
 } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { RecipeEntity } from './entities/recipe.entity';
+import { UpdateRecipeDto } from './dto/update-recipe.dto';
 
 @Injectable()
 export class RecipeService {
@@ -92,5 +97,36 @@ export class RecipeService {
               () => new NotFoundException(`Recipe with id '${id}' not found`),
             ),
       ),
+    );
+
+  /**
+   * Update a person in recipe list
+   *
+   * @param {string} id of the person to update
+   * @param person data to update
+   *
+   * @returns {Observable<Person>}
+   */
+  update = (id: string, recipe: UpdateRecipeDto): Observable<Recipe> =>
+    from(this._recipes).pipe(
+      find(
+        (_: Recipe) =>
+          _.author.pseudo.toLowerCase() ===
+            recipe.author.pseudo.toLowerCase() &&
+          _.name.toLowerCase() === recipe.name.toLowerCase() &&
+          _.id.toLowerCase() !== id.toLowerCase(),
+      ),
+      mergeMap((_: Recipe) =>
+        !!_
+          ? throwError(
+              () =>
+                new ConflictException(
+                  `Recipe with pseudo '${recipe.author.pseudo}' and name '${recipe.name}' already exists`,
+                ),
+            )
+          : this._findRecipesIndexOfList(id),
+      ),
+      tap((index: number) => Object.assign(this._recipes[index], recipe)),
+      map((index: number) => this._recipes[index]),
     );
 }

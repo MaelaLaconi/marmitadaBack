@@ -1,9 +1,11 @@
 import {
+  Body,
   ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
   Param,
+  Put,
   UseInterceptors,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
@@ -21,6 +23,7 @@ import {
 import { HttpInterceptor } from '../interceptors/http.interceptor';
 import { RecipeEntity } from './entities/recipe.entity';
 import { HandlerParams } from './validators/handler-params';
+import { UpdateRecipeDto } from './dto/update-recipe.dto';
 
 @ApiTags('recipes')
 @Controller('recipes')
@@ -124,5 +127,21 @@ export class RecipeController {
   @Delete(':id')
   delete(@Param('id') id: string): Observable<void> {
     return this._recipeService.delete(id);
+  }
+
+  /**
+   * Handler to answer to /recipes route
+   *
+   * @param id
+   * @param updateRecipenDto
+   *
+   * @returns Observable<Recipe>
+   */
+  @Put(':id')
+  update(
+    @Param('id') id: string,
+    @Body() updateRecipeDto: UpdateRecipeDto,
+  ): Observable<Recipe> {
+    return this._recipeService.update(id, updateRecipeDto);
   }
 }
