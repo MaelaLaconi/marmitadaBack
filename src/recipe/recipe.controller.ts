@@ -98,15 +98,28 @@ export class RecipeController {
   }
 
   /**
-   * Handler to answer to DELETE /people/:id route
+   * Handler to answer to DELETE /recipes/:id route
    *
-   * @param {string} id of the person to delete
+   * @param id
    *
    * @returns Observable<void>
    */
-  @ApiOkResponse({
-    description: 'Delete the recipe with by its id',
-    type: RecipeEntity,
+
+  @ApiNoContentResponse({
+    description: 'The recipe has been successfully deleted',
+  })
+  @ApiNotFoundResponse({
+    description: 'Recipe with the given "id" doesn\'t exist in the database',
+  })
+  @ApiBadRequestResponse({ description: 'Parameter provided is not good' })
+  @ApiUnprocessableEntityResponse({
+    description: "The request can't be performed in the database",
+  })
+  @ApiParam({
+    name: 'id',
+    description: 'Unique identifier of the recipe in the database',
+    type: String,
+    allowEmptyValue: false,
   })
   @Delete(':id')
   delete(@Param('id') id: string): Observable<void> {
