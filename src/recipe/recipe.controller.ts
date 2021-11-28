@@ -137,8 +137,8 @@ export class RecipeController {
   /**
    * Handler to answer to PUT /recipes/:id route
    *
-   * @param {HandlerParams} params list of route params to take recipe id
-   * @param updateRecipeDto data to update
+   * @param {string} id of the updated data
+   * @param {UpdateRecipeDto} updateRecipeDto data to update
    *
    * @returns Observable<RecipeEntity>
    */
