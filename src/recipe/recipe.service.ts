@@ -111,8 +111,8 @@ export class RecipeService {
     from(this._recipes).pipe(
       find(
         (_: Recipe) =>
-          _.author.pseudo.toLowerCase() ===
-            recipe.author.pseudo.toLowerCase() &&
+          /*_.author.pseudo.toLowerCase() ===
+            recipe.author.pseudo.toLowerCase() &&*/
           _.name.toLowerCase() === recipe.name.toLowerCase() &&
           _.id.toLowerCase() !== id.toLowerCase(),
       ),

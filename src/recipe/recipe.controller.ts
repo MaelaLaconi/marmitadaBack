@@ -12,14 +12,14 @@ import { Observable } from 'rxjs';
 import { Recipe } from './recipe.type';
 import { RecipeService } from './recipe.service';
 import {
-  ApiBadRequestResponse,
+  ApiBadRequestResponse, ApiBody, ApiConflictResponse,
   ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiParam,
   ApiTags,
-  ApiUnprocessableEntityResponse,
-} from '@nestjs/swagger';
+  ApiUnprocessableEntityResponse
+} from "@nestjs/swagger";
 import { HttpInterceptor } from '../interceptors/http.interceptor';
 import { RecipeEntity } from './entities/recipe.entity';
 import { HandlerParams } from './validators/handler-params';
@@ -129,14 +129,38 @@ export class RecipeController {
     return this._recipeService.delete(id);
   }
 
+
   /**
-   * Handler to answer to /recipes route
+   * Handler to answer to PUT /recipes/:id route
    *
-   * @param id
-   * @param updateRecipeDto
+   * @param {HandlerParams} params list of route params to take recipe id
+   * @param updateRecipeDto data to update
    *
-   * @returns Observable<Recipe>
+   * @returns Observable<RecipeEntity>
    */
+  @ApiOkResponse({
+    description: 'The recipe has been successfully updated',
+    type: RecipeEntity,
+  })
+  @ApiNotFoundResponse({
+    description: 'Recipe with the given "id" doesn\'t exist in the database',
+  })
+  @ApiConflictResponse({
+    description: 'The recipe already exists in the database',
+  })
+  @ApiBadRequestResponse({
+    description: 'Parameter and/or payload provided are not good',
+  })
+  @ApiUnprocessableEntityResponse({
+    description: "The request can't be performed in the database",
+  })
+  @ApiParam({
+    name: 'id',
+    description: 'Unique identifier of the recipe in the database',
+    type: String,
+    allowEmptyValue: false,
+  })
+  @ApiBody({ description: 'Payload to update a recipe', type: UpdateRecipeDto })
   @Put(':id')
   update(
     @Param('id') id: string,
