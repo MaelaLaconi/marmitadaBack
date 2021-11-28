@@ -6,6 +6,7 @@ import {
 import { Recipe } from './recipe.type';
 import { RECIPES } from '../static/_recipes';
 import {
+  defaultIfEmpty,
   find,
   findIndex,
   from,
@@ -14,10 +15,12 @@ import {
   of,
   throwError,
 } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import {filter, map, tap} from 'rxjs/operators';
 import { RecipeEntity } from './entities/recipe.entity';
 import { UpdateRecipeDto } from './dto/update-recipe.dto';
 import {CreateRecipeDto} from "./dto/create-recipe.dto";
+import {RecipesDao} from "./dao/recipes.dao";
+import {Recipe as R} from './schemas/recipe.schema'
 
 @Injectable()
 export class RecipeService {
@@ -26,7 +29,7 @@ export class RecipeService {
   /**
    * Constructor of the class
    */
-  constructor() {
+  constructor(private readonly _recipesDao: RecipesDao) {
     this._recipes = [].concat(RECIPES);
   }
 
@@ -55,8 +58,10 @@ export class RecipeService {
    * @returns {Observable<RecipeEntity[] | void>} array with all the recipes or void if there is none
    */
   findAll = (): Observable<RecipeEntity[] | void> =>
-    of(this._recipes).pipe(
-      map((_: Recipe[]) => (!!_ && !!_.length ? _ : undefined)),
+    this._recipesDao.find().pipe(
+      filter((_: R[]) => !!_),
+      map((_: R[]) => _.map((__: R) => new RecipeEntity(__))),
+      defaultIfEmpty(undefined),
     );
 
   /**

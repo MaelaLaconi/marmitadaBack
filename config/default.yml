@@ -11,3 +11,5 @@ swagger:
   version: 0.1
   tag: recipes
   path: documentation
+mongodb:
+  uri: mongodb://0.0.0.0:27017/marmitada
