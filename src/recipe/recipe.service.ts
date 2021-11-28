@@ -87,7 +87,7 @@ export class RecipeService {
     );
 
   /**
-   * Deletes one recipe in people list
+   * Deletes one recipe in cookbook list
    *
    * @param {string} id of the recipe to delete
    *
