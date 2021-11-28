@@ -6,6 +6,7 @@ import {
   Get,
   Param,
   Put,
+  Post,
   UseInterceptors,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
@@ -13,16 +14,20 @@ import { Recipe } from './recipe.type';
 import { RecipeService } from './recipe.service';
 import {
   ApiBadRequestResponse,
+  ApiBody,
+  ApiConflictResponse,
+  ApiCreatedResponse,
   ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiParam,
   ApiTags,
-  ApiUnprocessableEntityResponse,
-} from '@nestjs/swagger';
-import { HttpInterceptor } from '../interceptors/http.interceptor';
-import { RecipeEntity } from './entities/recipe.entity';
-import { HandlerParams } from './validators/handler-params';
+  ApiUnprocessableEntityResponse
+} from "@nestjs/swagger";
+import {HttpInterceptor} from "../interceptors/http.interceptor";
+import {RecipeEntity} from "./entities/recipe.entity";
+import {HandlerParams} from "./validators/handler-params";
+import {CreateRecipeDto} from "./dto/create-recipe.dto";
 import { UpdateRecipeDto } from './dto/update-recipe.dto';
 
 @ApiTags('recipes')
@@ -69,7 +74,7 @@ export class RecipeController {
     description: 'Parameter provided is not valid',
   })
   @ApiUnprocessableEntityResponse({
-    description: "The request can't be performed in the database",
+    description: 'The request can\'t be performed in the database',
   })
   @ApiParam({
     name: 'id',
@@ -143,5 +148,24 @@ export class RecipeController {
     @Body() updateRecipeDto: UpdateRecipeDto,
   ): Observable<Recipe> {
     return this._recipeService.update(id, updateRecipeDto);
+  }
+  
+  @ApiCreatedResponse({
+    description: 'The recipe has been successfuly created',
+    type: RecipeEntity,
+  })
+  @ApiConflictResponse({
+    description: 'The recipe already exists in the database',
+  })
+  @ApiBadRequestResponse({
+    description: 'The payload provided is not good',
+  })
+  @ApiBody({
+    description: 'Payload to create a new recipe',
+    type: CreateRecipeDto,
+  })
+  @Post()
+  create(@Body() recipe: CreateRecipeDto): Observable<RecipeEntity> {
+    return this._recipeService.create(recipe);
   }
 }

@@ -1,26 +1,16 @@
-import {Exclude, Expose, Type} from "class-transformer";
+import {RecipeAuthorDto} from "./recipe-author.dto";
 import {ApiProperty} from "@nestjs/swagger";
-import {Author} from "../recipe.type";
-import {AuthorEntity} from "./author.entity";
+import { IsInstance, IsNotEmpty, IsNumber, IsString, ValidateNested} from "class-validator";
+import {Type} from "class-transformer";
 
-@Exclude()
-export class RecipeEntity {
-  @ApiProperty({
-    name: 'id',
-    description: 'Unique id for the recipe',
-    example: '5763cd4d9d2a4f259b53c901'
-  })
-  @Expose()
-  @Type(() => String)
-  id: string;
-  
+export class CreateRecipeDto {
   @ApiProperty({
     name: 'name',
     description: 'Name of the dish made with this recipe',
     example: 'Tadaramisu'
   })
-  @Expose()
-  @Type(() => String)
+  @IsString()
+  @IsNotEmpty()
   name: string;
   
   @ApiProperty({
@@ -28,17 +18,19 @@ export class RecipeEntity {
     description: 'A description of the dish made with this recipe',
     example: 'Un dessert italien à base de mascarponne, de biscuit boudoire, de sucre et de café'
   })
-  @Expose()
-  @Type(() => String)
+  @IsString()
+  @IsNotEmpty()
   description: string;
   
   @ApiProperty({
     name: 'author',
     description: 'Author',
   })
-  @Expose()
-  @Type(() => AuthorEntity)
-  author: AuthorEntity;
+  @IsInstance(RecipeAuthorDto)
+  @ValidateNested()
+  @Type(() => RecipeAuthorDto)
+  @IsNotEmpty()
+  author: RecipeAuthorDto;
   
   @ApiProperty({
     name: 'ingredients',
@@ -46,18 +38,21 @@ export class RecipeEntity {
     example: ['first ingredient', 'second ingredient', 'third ingredient'],
     isArray: true,
   })
-  @Expose()
-  @Type(() => Array)
+  @IsString({
+    each: true,
+  })
+  @IsNotEmpty()
   ingredients: string[];
   
   @ApiProperty({
     name: 'steps',
     description: 'List of steps to follow for this recipe',
     example: ['First do this.', 'Then do that.', 'Let cool down in the freezer and set the toppings.'],
-    isArray: true,
   })
-  @Expose()
-  @Type(() => Array)
+  @IsString({
+    each: true,
+  })
+  @IsNotEmpty()
   steps: string[];
   
   @ApiProperty({
@@ -65,8 +60,8 @@ export class RecipeEntity {
     description: 'Difficulty of the recipe. Between 0 and 5.',
     example: 4
   })
-  @Expose()
-  @Type(() => Number)
+  @IsNotEmpty()
+  @IsNumber()
   difficulty: number;
   
   @ApiProperty({
@@ -74,8 +69,8 @@ export class RecipeEntity {
     description: 'An approximation of the time needed to do this recipe.',
     example: 30
   })
-  @Expose()
-  @Type(() => Number)
+  @IsNotEmpty()
+  @IsNumber()
   preparationTime: number;
   
   @ApiProperty({
@@ -83,11 +78,7 @@ export class RecipeEntity {
     description: 'An approximation of the time needed to cook the dish.',
     example: 5
   })
-  @Expose()
-  @Type(() => Number)
+  @IsNotEmpty()
+  @IsNumber()
   cookingTime: number;
-  
-  constructor(partial: Partial<RecipeEntity>) {
-    Object.assign(this, partial);
-  }
 }

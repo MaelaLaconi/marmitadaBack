@@ -17,6 +17,7 @@ import {
 import { map, tap } from 'rxjs/operators';
 import { RecipeEntity } from './entities/recipe.entity';
 import { UpdateRecipeDto } from './dto/update-recipe.dto';
+import {CreateRecipeDto} from "./dto/create-recipe.dto";
 
 @Injectable()
 export class RecipeService {
@@ -29,6 +30,25 @@ export class RecipeService {
     this._recipes = [].concat(RECIPES);
   }
 
+  create = (recipe: CreateRecipeDto): Observable<RecipeEntity> =>
+    from(this._recipes).pipe(
+      find(
+        (_: Recipe) =>
+          _.name.toLowerCase() === recipe.name.toLowerCase() &&
+          _.author.pseudo.toLowerCase() === recipe.author.pseudo.toLowerCase(),
+      ),
+      mergeMap( (_: Recipe) =>
+        !!_
+          ? throwError(
+            () =>
+              new ConflictException(
+                `Recipe with name '${recipe.name}' by the author '${recipe.author.pseudo} already exists in database'`,
+              ),
+          )
+          : this._addRecipe(recipe),
+      ),
+    );
+  
   /**
    * Return all the recipes in database
    *
@@ -44,7 +64,8 @@ export class RecipeService {
    *
    * @returns {Observable<RecipeEntity | void>} first recipe in the database
    */
-  findFirst = (): Observable<RecipeEntity | void> => of(this._recipes[0]);
+  findFirst = (): Observable<RecipeEntity | void> =>
+    of(this._recipes[0]);
 
   /**
    * Returns the recipe with the corresponding id
@@ -103,11 +124,11 @@ export class RecipeService {
    * Update a person in recipe list
    *
    * @param {string} id of the person to update
-   * @param person data to update
+   * @param recipe data to update
    *
-   * @returns {Observable<Person>}
+   * @returns {Observable<RecipeEntity>}
    */
-  update = (id: string, recipe: UpdateRecipeDto): Observable<Recipe> =>
+  update = (id: string, recipe: UpdateRecipeDto): Observable<RecipeEntity> =>
     from(this._recipes).pipe(
       find(
         (_: Recipe) =>
@@ -129,4 +150,22 @@ export class RecipeService {
       tap((index: number) => Object.assign(this._recipes[index], recipe)),
       map((index: number) => this._recipes[index]),
     );
+  
+  private _addRecipe = (recipe: CreateRecipeDto): Observable<RecipeEntity> =>
+    of({
+      ...recipe,
+      id: this._createId(),
+    }).pipe(
+      tap((_: Recipe) => (this._recipes = this._recipes.concat(_))),
+      map((_: Recipe) => new RecipeEntity(_)),
+    );
+  
+  /**
+   * Creates a new id
+   *
+   * @returns {string}
+   *
+   * @private
+   */
+  private _createId = (): string => `${new Date().getTime()}`;
 }
