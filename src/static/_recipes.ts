@@ -1,5 +1,6 @@
 export const RECIPES = [
   {
+    id: '5763cd4d9d2a4f259b53c901',
     name: 'Tadaramisu',
     description: 'Un dessert italien à base de mascarponne, de biscuit boudoire, de sucre et de café',
     author: {
@@ -32,6 +33,7 @@ export const RECIPES = [
     cookingTime: 0,
   },
   {
+    id: '5763cd4d51fdb6588742f99e',
     name: 'Eau tadagazeuse',
     description: 'De l\'eau gazéifié au carbone de diamants',
     author: {
