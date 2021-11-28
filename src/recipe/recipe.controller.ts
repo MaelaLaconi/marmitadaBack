@@ -1,17 +1,26 @@
-import {ClassSerializerInterceptor, Controller, Get, Param, UseInterceptors} from '@nestjs/common';
-import {Observable} from "rxjs";
-import {Recipe} from "./recipe.type";
-import {RecipeService} from "./recipe.service";
+import {
+  ClassSerializerInterceptor,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  UseInterceptors,
+} from '@nestjs/common';
+import { Observable } from 'rxjs';
+import { Recipe } from './recipe.type';
+import { RecipeService } from './recipe.service';
 import {
   ApiBadRequestResponse,
   ApiNoContentResponse,
   ApiNotFoundResponse,
-  ApiOkResponse, ApiParam,
-  ApiTags, ApiUnprocessableEntityResponse
-} from "@nestjs/swagger";
-import {HttpInterceptor} from "../interceptors/http.interceptor";
-import {RecipeEntity} from "./entities/recipe.entity";
-import {HandlerParams} from "./validators/handler-params";
+  ApiOkResponse,
+  ApiParam,
+  ApiTags,
+  ApiUnprocessableEntityResponse,
+} from '@nestjs/swagger';
+import { HttpInterceptor } from '../interceptors/http.interceptor';
+import { RecipeEntity } from './entities/recipe.entity';
+import { HandlerParams } from './validators/handler-params';
 
 @ApiTags('recipes')
 @Controller('recipes')
@@ -23,7 +32,7 @@ export class RecipeController {
    * @param _recipeService Service to access recipes
    */
   constructor(private readonly _recipeService: RecipeService) {}
-  
+
   /**
    * Handler to answer to GET /recipes/first route
    *
@@ -31,14 +40,14 @@ export class RecipeController {
    */
   @ApiOkResponse({
     description: 'Return the first recipe',
-    type: RecipeEntity
+    type: RecipeEntity,
   })
-  @ApiNoContentResponse({description: 'There is no recipe here.'})
+  @ApiNoContentResponse({ description: 'There is no recipe here.' })
   @Get('first')
   findFirst(): Observable<Recipe | void> {
     return this._recipeService.findFirst();
   }
-  
+
   /**
    * Handler to answer to GET /recipes/:id route
    *
@@ -57,19 +66,19 @@ export class RecipeController {
     description: 'Parameter provided is not valid',
   })
   @ApiUnprocessableEntityResponse({
-    description: 'The request can\'t be performed in the database',
+    description: "The request can't be performed in the database",
   })
   @ApiParam({
     name: 'id',
     description: 'Unique identifier of the recipe in the database',
     type: String,
-    allowEmptyValue: false
+    allowEmptyValue: false,
   })
   @Get('/:id')
   findById(@Param() params: HandlerParams): Observable<RecipeEntity> {
     return this._recipeService.findById(params.id);
   }
-  
+
   /**
    * Handler to answer to GET /recipes route
    *
@@ -78,13 +87,29 @@ export class RecipeController {
   @ApiOkResponse({
     description: 'Return all the known recipes',
     type: RecipeEntity,
-    isArray: true
+    isArray: true,
   })
   @ApiNoContentResponse({
-    description: 'No recipes are in database'
+    description: 'No recipes are in database',
   })
   @Get()
   findAll(): Observable<Recipe[] | void> {
     return this._recipeService.findAll();
+  }
+
+  /**
+   * Handler to answer to DELETE /people/:id route
+   *
+   * @param {string} id of the person to delete
+   *
+   * @returns Observable<void>
+   */
+  @ApiOkResponse({
+    description: 'Delete the recipe with by its id',
+    type: RecipeEntity,
+  })
+  @Delete(':id')
+  delete(@Param('id') id: string): Observable<void> {
+    return this._recipeService.delete(id);
   }
 }
