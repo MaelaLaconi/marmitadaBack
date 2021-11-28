@@ -1,9 +1,9 @@
-import {ClassSerializerInterceptor, Controller, Get, Param, UseInterceptors} from '@nestjs/common';
+import {Body, ClassSerializerInterceptor, Controller, Get, Param, Post, UseInterceptors} from '@nestjs/common';
 import {Observable} from "rxjs";
 import {Recipe} from "./recipe.type";
 import {RecipeService} from "./recipe.service";
 import {
-  ApiBadRequestResponse,
+  ApiBadRequestResponse, ApiBody, ApiConflictResponse, ApiCreatedResponse,
   ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiOkResponse, ApiParam,
@@ -12,6 +12,7 @@ import {
 import {HttpInterceptor} from "../interceptors/http.interceptor";
 import {RecipeEntity} from "./entities/recipe.entity";
 import {HandlerParams} from "./validators/handler-params";
+import {CreateRecipeDto} from "./dto/create-recipe.dto";
 
 @ApiTags('recipes')
 @Controller('recipes')
@@ -86,5 +87,24 @@ export class RecipeController {
   @Get()
   findAll(): Observable<Recipe[] | void> {
     return this._recipeService.findAll();
+  }
+  
+  @ApiCreatedResponse({
+    description: 'The recipe has been successfuly created',
+    type: RecipeEntity,
+  })
+  @ApiConflictResponse({
+    description: 'The recipe already exists in the database',
+  })
+  @ApiBadRequestResponse({
+    description: 'The payload provided is not good',
+  })
+  @ApiBody({
+    description: 'Payload to create a new recipe',
+    type: CreateRecipeDto,
+  })
+  @Post()
+  create(@Body() recipe: CreateRecipeDto): Observable<RecipeEntity> {
+    return this._recipeService.create(recipe);
   }
 }

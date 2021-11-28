@@ -1,9 +1,10 @@
-import {Injectable, NotFoundException} from '@nestjs/common';
+import {ConflictException, Injectable, NotFoundException} from '@nestjs/common';
 import {Recipe} from "./recipe.type";
 import {RECIPES} from '../static/_recipes'
 import {find, from, mergeMap, Observable, of, throwError} from "rxjs";
-import {map} from "rxjs/operators";
+import {map, tap} from "rxjs/operators";
 import {RecipeEntity} from "./entities/recipe.entity";
+import {CreateRecipeDto} from "./dto/create-recipe.dto";
 
 @Injectable()
 export class RecipeService {
@@ -16,6 +17,25 @@ export class RecipeService {
     this._recipes = [].concat(RECIPES);
   }
 
+  create = (recipe: CreateRecipeDto): Observable<RecipeEntity> =>
+    from(this._recipes).pipe(
+      find(
+        (_: Recipe) =>
+          _.name.toLowerCase() === recipe.name.toLowerCase() &&
+          _.author.pseudo.toLowerCase() === recipe.author.pseudo.toLowerCase(),
+      ),
+      mergeMap( (_: Recipe) =>
+        !!_
+          ? throwError(
+            () =>
+              new ConflictException(
+                `Recipe with name '${recipe.name}' by the author '${recipe.author.pseudo} already exists in database'`,
+              ),
+          )
+          : this._addRecipe(recipe),
+      ),
+    );
+  
   /**
    * Return all the recipes in database
    *
@@ -52,4 +72,22 @@ export class RecipeService {
           ),
       ),
     );
+  
+  private _addRecipe = (recipe: CreateRecipeDto): Observable<RecipeEntity> =>
+    of({
+      ...recipe,
+      id: this._createId(),
+    }).pipe(
+      tap((_: Recipe) => (this._recipes = this._recipes.concat(_))),
+      map((_: Recipe) => new RecipeEntity(_)),
+    );
+  
+  /**
+   * Creates a new id
+   *
+   * @returns {string}
+   *
+   * @private
+   */
+  private _createId = (): string => `${new Date().getTime()}`;
 }
