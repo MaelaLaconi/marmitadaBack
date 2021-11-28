@@ -35,22 +35,19 @@ export class RecipeService {
   }
 
   create = (recipe: CreateRecipeDto): Observable<RecipeEntity> =>
-    from(this._recipes).pipe(
-      find(
-        (_: Recipe) =>
-          _.name.toLowerCase() === recipe.name.toLowerCase() &&
-          _.author.pseudo.toLowerCase() === recipe.author.pseudo.toLowerCase(),
-      ),
-      mergeMap( (_: Recipe) =>
-        !!_
+    this._addRecipe(recipe).pipe(
+      mergeMap((_: CreateRecipeDto) => this._recipesDao.save(_)),
+      catchError( (e) =>
+        e.code === 11000
           ? throwError(
             () =>
               new ConflictException(
-                `Recipe with name '${recipe.name}' by the author '${recipe.author.pseudo} already exists in database'`,
+                `Recipe with name '${recipe.name}' by the author '${recipe.author.pseudo}' already exists`,
               ),
           )
-          : this._addRecipe(recipe),
+          : throwError( () => new UnprocessableEntityException(e.message)),
       ),
+      map((_: R) => new RecipeEntity(_)),
     );
   
   /**

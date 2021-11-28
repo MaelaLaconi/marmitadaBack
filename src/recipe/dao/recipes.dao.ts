@@ -5,6 +5,7 @@ import {Model} from "mongoose";
 import {defaultIfEmpty, from, Observable} from "rxjs";
 import {filter, map} from "rxjs/operators";
 import {RecipeEntity} from "../entities/recipe.entity";
+import {CreateRecipeDto} from "../dto/create-recipe.dto";
 
 @Injectable()
 export class RecipesDao {
@@ -44,5 +45,17 @@ export class RecipesDao {
       filter((doc: RecipeDocument) => !! doc),
       map((doc: RecipeDocument) => doc.toJSON()),
       defaultIfEmpty(undefined),
+    );
+  
+  /**
+   * Check if recipe already exists with index and add it in recipes list
+   *
+   * @param {CreateRecipeDto} recipe to create
+   *
+   * @returns {Observable<Recipe>} recipe as added in database
+   */
+  save = (recipe: CreateRecipeDto): Observable<Recipe> =>
+    from(new this._recipeModel(recipe).save()).pipe(
+      map((doc: RecipeDocument) => doc.toJSON()),
     );
 }
