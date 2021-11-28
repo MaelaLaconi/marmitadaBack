@@ -1,33 +1,35 @@
-import {ApiProperty} from "@nestjs/swagger";
-import {IsNotEmpty, IsOptional, IsString} from "class-validator";
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class RecipeAuthorDto {
   @ApiProperty({
     name: 'pseudo',
-    description: 'The author\'s pseudo',
-    example: 'Gius'
+    description: "The author's pseudo",
+    example: 'Gius',
   })
   @IsString()
   @IsNotEmpty()
   pseudo: string;
-  
-  @ApiProperty({
+
+  @ApiPropertyOptional({
     name: 'firstname',
     description: 'Firstname of the author',
-    example: 'Giuseppe',
+    example: 'Mclaughlin',
     required: false,
   })
-  @IsString()
   @IsOptional()
+  @IsString()
+  @IsNotEmpty()
   firstname?: string;
-  
-  @ApiProperty({
+
+  @ApiPropertyOptional({
     name: 'lastname',
     description: 'Lastname of the author',
     example: 'Russo',
     required: false,
   })
-  @IsString()
   @IsOptional()
+  @IsString()
+  @IsNotEmpty()
   lastname?: string;
 }
