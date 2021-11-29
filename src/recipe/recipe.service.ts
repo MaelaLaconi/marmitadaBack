@@ -162,9 +162,13 @@ export class RecipeService {
 
   findByCategory = (category: string): Observable<RecipeEntity[] | void> =>
     this._recipesDao.findByCategory(category).pipe(
+      catchError( (e) =>
+        throwError(() => new UnprocessableEntityException(e.message)),
+      ),
       filter((_: Recipe[]) => !!_),
       map((_: Recipe[]) => _.map((__: Recipe) => new RecipeEntity(__))),
       defaultIfEmpty(undefined),
     );
+
 
 }
