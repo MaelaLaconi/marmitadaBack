@@ -217,7 +217,7 @@ export class RecipeController {
     type: String,
     allowEmptyValue: false,
   })
-  @Get('/:category')
+  @Get('category/:category')
   findByCategory(@Param() params: HandlerParams): Observable<Recipe[] | void> {
     return this._recipeService.findByCategory(params.id);
   }
