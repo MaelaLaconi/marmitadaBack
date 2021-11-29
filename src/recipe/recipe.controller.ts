@@ -29,6 +29,7 @@ import {RecipeEntity} from "./entities/recipe.entity";
 import {HandlerParams} from "./validators/handler-params";
 import {CreateRecipeDto} from "./dto/create-recipe.dto";
 import { UpdateRecipeDto } from './dto/update-recipe.dto';
+import { HandlerCategory } from "./validators/handler-category";
 
 @ApiTags('recipes')
 @Controller('recipes')
@@ -217,9 +218,9 @@ export class RecipeController {
     type: String,
     allowEmptyValue: false,
   })
-  @Get('category/:category')
-  findByCategory(@Param() params: HandlerParams): Observable<Recipe[] | void> {
-    return this._recipeService.findByCategory(params.id);
+  @Get('/category/:category')
+  findByCategory(@Param() params: HandlerCategory): Observable<Recipe[] | void> {
+    return this._recipeService.findByCategory(params.category);
   }
 
 }
