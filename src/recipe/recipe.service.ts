@@ -57,6 +57,8 @@ export class RecipeService {
       defaultIfEmpty(undefined),
     );
 
+
+
   /**
    * Returns the recipe with the corresponding id
    *
@@ -94,7 +96,22 @@ export class RecipeService {
       map((_: Recipe[]) => _.map((__: Recipe) => new RecipeEntity(__))),
       defaultIfEmpty(undefined),
     );
-  
+
+  /**
+   * Return all the recipes with distinct category in database
+   *
+   * @returns {Observable<RecipeEntity[] | void>} array with all the recipes or void if there is none
+   */
+  findAllCategory = (): Observable<RecipeEntity[] | void> =>
+    this._recipesDao.findAllCategory().pipe(
+      catchError( (e) =>
+        throwError(() => new UnprocessableEntityException(e.message)),
+      ),
+      filter((_: Recipe[]) => !!_),
+      map((_: Recipe[]) => _.map((__: Recipe) => new RecipeEntity(__))),
+      defaultIfEmpty(undefined),
+    );
+
   /**
    * Returns randomly one recipe of the list
    *

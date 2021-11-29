@@ -223,4 +223,26 @@ export class RecipeController {
     return this._recipeService.findByCategory(params.category);
   }
 
+
+  /**
+   * Handler to answer to GET /recipes/category route
+   *
+   * @returns {Observable<RecipeEntity[] | void>} array of all the known recipes
+   */
+  @ApiOkResponse({
+    description: 'Return all the recipe with distinct category',
+    type: RecipeEntity,
+    isArray: true,
+  })
+  @ApiNoContentResponse({
+    description: 'No recipes are in database',
+  })
+
+  @Get('/category')
+  findAllCategory(): Observable<Recipe[] | void> {
+    return this._recipeService.findAll();
+  }
+
+
+
 }
