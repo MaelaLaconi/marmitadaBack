@@ -4,6 +4,16 @@ import {ApiProperty} from "@nestjs/swagger";
 
 @Exclude()
 export class RecipeEntity {
+
+  @ApiProperty({
+    name: 'category',
+    description: 'Category of the recipe',
+    example: 'sweet/salty'
+  })
+  @Expose()
+  @Type(() => String)
+  category: string;
+
   @ApiProperty({
     name: 'id',
     description: 'Unique id for the recipe',

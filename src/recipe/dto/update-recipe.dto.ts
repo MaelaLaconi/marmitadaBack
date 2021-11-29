@@ -11,6 +11,18 @@ import {
 import { Type } from 'class-transformer';
 
 export class UpdateRecipeDto {
+
+  @ApiPropertyOptional({
+    name: 'category',
+    description: 'Category of the recipe',
+    example: 'salty/sweet',
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  category?: string;
+
   @ApiProperty({
     name: 'name',
     description: 'Name of the dish made with this recipe',

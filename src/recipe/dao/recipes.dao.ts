@@ -48,6 +48,22 @@ export class RecipesDao {
       defaultIfEmpty(undefined),
     );
 
+
+  /**
+   * Call mongoose method, call toJSON on each result filter by category and returns RecipeModel[] or undefined
+   *
+   * @returns {Observable<Recipe[] | void>}
+   */
+
+
+  findByCategory = (category: string): Observable<Recipe[] | void> =>
+    from(this._recipeModel.find({})).pipe(
+      filter((docs: RecipeDocument[]) => !!docs && docs.length > 0),
+      map((docs: RecipeDocument[]) =>
+        docs.map((_: RecipeDocument) => _.toJSON()),
+      ),
+      defaultIfEmpty(undefined),
+    );
   /**
    * Check if recipe already exists with index and add it in recipes list
    *

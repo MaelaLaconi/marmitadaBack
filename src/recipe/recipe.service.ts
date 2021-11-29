@@ -158,4 +158,13 @@ export class RecipeService {
    * @private
    */
   private _createId = (): string => `${new Date().getTime()}`;
+
+
+  findByCategory = (category: string): Observable<RecipeEntity[] | void> =>
+    this._recipesDao.findByCategory(category).pipe(
+      filter((_: Recipe[]) => !!_),
+      map((_: Recipe[]) => _.map((__: Recipe) => new RecipeEntity(__))),
+      defaultIfEmpty(undefined),
+    );
+
 }

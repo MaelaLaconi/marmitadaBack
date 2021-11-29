@@ -24,7 +24,15 @@ export class Recipe {
   set id (value: any) {
     this._id = value;
   }
-  
+
+  @Prop({
+    type: String,
+    required: true,
+    trim: true,
+    minlenght: 2,
+  })
+  category: string;
+
   @Prop({
     type: String,
     required: true,

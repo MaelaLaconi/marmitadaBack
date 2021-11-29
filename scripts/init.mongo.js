@@ -6,6 +6,7 @@
 // Insert people array
 db.getCollection('recipes').insertMany([
   {
+    category:'sweet',
     name: 'Tadaramisu',
     description: 'Un dessert italien à base de mascarponne, de biscuit boudoire, de sucre et de café',
     author: {
@@ -38,6 +39,7 @@ db.getCollection('recipes').insertMany([
     cookingTime: 0,
   },
   {
+    category:'salty',
     name: 'Eau tadagazeuse',
     description: 'De l\'eau gazéifié au carbone de diamants',
     author: {

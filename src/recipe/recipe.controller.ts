@@ -191,6 +191,35 @@ export class RecipeController {
   create(@Body() recipe: CreateRecipeDto): Observable<RecipeEntity> {
     return this._recipeService.create(recipe);
   }
-
+  /**
+   * Handler to answer to GET /recipes/:category route
+   *
+   * @param {HandlerParams} params list of route params to take recipe category
+   *
+   * @returns {Observable<RecipeEntity>} Recipe corresponding to the category asked
+   */
+  @ApiOkResponse({
+    description: 'Return the recipe with the id asked',
+    type: RecipeEntity,
+  })
+  @ApiNotFoundResponse({
+    description: 'Recipe with the given "id" doesn\'t exists in the database',
+  })
+  @ApiBadRequestResponse({
+    description: 'Parameter provided is not valid',
+  })
+  @ApiUnprocessableEntityResponse({
+    description: 'The request can\'t be performed in the database',
+  })
+  @ApiParam({
+    name: 'id',
+    description: 'Unique identifier of the recipe in the database',
+    type: String,
+    allowEmptyValue: false,
+  })
+  @Get('/:category')
+  findByCategory(@Param() params: HandlerParams): Observable<Recipe[] | void> {
+    return this._recipeService.findByCategory(params.id);
+  }
 
 }
