@@ -21,6 +21,10 @@ export class Recipe {
   })
   _id: any;
   
+  set id (value: any) {
+    this._id = value;
+  }
+  
   @Prop({
     type: String,
     required: true,

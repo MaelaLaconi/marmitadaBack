@@ -3,8 +3,6 @@ import {
   Injectable,
   NotFoundException, UnprocessableEntityException,
 } from '@nestjs/common';
-import { Recipe } from './recipe.type';
-import { RECIPES } from '../static/_recipes';
 import {
   catchError,
   defaultIfEmpty,
@@ -18,7 +16,7 @@ import { RecipeEntity } from './entities/recipe.entity';
 import { UpdateRecipeDto } from './dto/update-recipe.dto';
 import {CreateRecipeDto} from "./dto/create-recipe.dto";
 import {RecipesDao} from "./dao/recipes.dao";
-import {Recipe as R} from './schemas/recipe.schema'
+import {Recipe} from './schemas/recipe.schema'
 
 @Injectable()
 export class RecipeService {
@@ -28,11 +26,11 @@ export class RecipeService {
    * Constructor of the class
    */
   constructor(private readonly _recipesDao: RecipesDao) {
-    this._recipes = [].concat(RECIPES);
+    this._recipes = [];
   }
 
   create = (recipe: CreateRecipeDto): Observable<RecipeEntity> =>
-    this._addRecipe(recipe).pipe(
+    of(recipe).pipe(
       mergeMap((_: CreateRecipeDto) => this._recipesDao.save(_)),
       catchError( (e) =>
         e.code === 11000
@@ -44,7 +42,7 @@ export class RecipeService {
           )
           : throwError( () => new UnprocessableEntityException(e.message)),
       ),
-      map((_: R) => new RecipeEntity(_)),
+      map((_: Recipe) => new RecipeEntity(_)),
     );
 
   /**
@@ -54,18 +52,10 @@ export class RecipeService {
    */
   findAll = (): Observable<RecipeEntity[] | void> =>
     this._recipesDao.find().pipe(
-      filter((_: R[]) => !!_),
-      map((_: R[]) => _.map((__: R) => new RecipeEntity(__))),
+      filter((_: Recipe[]) => !!_),
+      map((_: Recipe[]) => _.map((__: Recipe) => new RecipeEntity(__))),
       defaultIfEmpty(undefined),
     );
-
-  /**
-   * Return the first recipe known
-   *
-   * @returns {Observable<RecipeEntity | void>} first recipe in the database
-   */
-  findFirst = (): Observable<RecipeEntity | void> =>
-    of(this._recipes[0]);
 
   /**
    * Returns the recipe with the corresponding id
@@ -83,7 +73,7 @@ export class RecipeService {
         !!_
           ? of(new RecipeEntity(_))
           : throwError(
-            () =>new NotFoundException(`Recipe with id '${id}' not found`),
+            () => new NotFoundException(`Recipe with id '${id}' not found`),
           ),
       ),
     );
@@ -95,9 +85,9 @@ export class RecipeService {
    */
   findRandom = (): Observable<RecipeEntity | void> =>
     this._recipesDao.find().pipe(
-      filter((_: R[]) => !!_),
-      map((_: R[]) => _[Math.round(Math.random() * _.length)]),
-      map((_: R) => new RecipeEntity(_)),
+      filter((_: Recipe[]) => !!_),
+      map((_: Recipe[]) => _[Math.round(Math.random() * _.length)]),
+      map((_: Recipe) => new RecipeEntity(_)),
       defaultIfEmpty(undefined),
     );
 
@@ -113,7 +103,7 @@ export class RecipeService {
       catchError((e) =>
         throwError(() => new UnprocessableEntityException(e.message)),
       ),
-      mergeMap((_: R) =>
+      mergeMap((_: Recipe) =>
         !!_
           ? of(undefined)
           : throwError(
@@ -142,7 +132,7 @@ export class RecipeService {
           )
           : throwError(() => new UnprocessableEntityException(e.message)),
       ),
-      mergeMap((_: R) =>
+      mergeMap((_: Recipe) =>
         !!_
           ? of(new RecipeEntity(_))
           : throwError(
@@ -151,7 +141,7 @@ export class RecipeService {
       ),
     );
 
-  private _addRecipe = (recipe: CreateRecipeDto): Observable<RecipeEntity> =>
+  private _addRecipe = (recipe: CreateRecipeDto): Observable<CreateRecipeDto> =>
     of({
       ...recipe,
       id: this._createId(),

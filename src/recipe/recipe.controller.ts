@@ -42,21 +42,6 @@ export class RecipeController {
   constructor(private readonly _recipeService: RecipeService) {}
 
   /**
-   * Handler to answer to GET /recipes/first route
-   *
-   * @returns {Observable<RecipeEntity>} First Recipe in the database
-   */
-  @ApiOkResponse({
-    description: 'Return the first recipe',
-    type: RecipeEntity,
-  })
-  @ApiNoContentResponse({ description: 'There is no recipe here.' })
-  @Get('first')
-  findFirst(): Observable<Recipe | void> {
-    return this._recipeService.findFirst();
-  }
-
-  /**
    * Handler to answer to GET /recipe/random route
    *
    * @returns Observable<RecipeEntity | void>
@@ -123,7 +108,7 @@ export class RecipeController {
   /**
    * Handler to answer to DELETE /recipes/:id route
    *
-   * @param {HandlerParams}
+   * @param {HandlerParams} params
    *
    * @returns Observable<void>
    */
@@ -152,10 +137,10 @@ export class RecipeController {
   /**
    * Handler to answer to PUT /recipes/:id route
    *
-   * @param {string} id of the updated data
-   * @param {UpdateRecipeDto} updateRecipeDto data to update
    *
    * @returns Observable<RecipeEntity>
+   * @param params
+   * @param updatePersonDto
    */
   @ApiOkResponse({
     description: 'The recipe has been successfully updated',

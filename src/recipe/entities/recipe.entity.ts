@@ -1,7 +1,6 @@
 import {Exclude, Expose, Type} from "class-transformer";
-import {ApiProperty} from "@nestjs/swagger";
-import {Author} from "../recipe.type";
 import {AuthorEntity} from "./author.entity";
+import {ApiProperty} from "@nestjs/swagger";
 
 @Exclude()
 export class RecipeEntity {
