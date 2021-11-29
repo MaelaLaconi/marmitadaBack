@@ -57,6 +57,21 @@ export class RecipeController {
   }
 
   /**
+   * Handler to answer to GET /recipe/random route
+   *
+   * @returns Observable<RecipeEntity | void>
+   */
+  @ApiOkResponse({
+    description: 'Returns one recipe randomly',
+    type: RecipeEntity,
+  })
+  @ApiNoContentResponse({ description: 'No person exists in database' })
+  @Get('random')
+  findRandom(): Observable<RecipeEntity | void> {
+    return this._recipeService.findRandom();
+  }
+
+  /**
    * Handler to answer to GET /recipes/:id route
    *
    * @param {HandlerParams} params list of route params to take recipe id

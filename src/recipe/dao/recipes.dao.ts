@@ -75,7 +75,7 @@ export class RecipesDao {
     );
 
   /**
-   * Update a person in recipe list
+   * Update a recipe in recipe list
    *
    * @param {string} id
    * @param {UpdatePersonDto} person

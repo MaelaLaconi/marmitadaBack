@@ -92,6 +92,19 @@ export class RecipeService {
     );
 
 
+  /**
+   * Returns randomly one recipe of the list
+   *
+   * @returns {Observable<PersonEntity | void>}
+   */
+  findRandom = (): Observable<RecipeEntity | void> =>
+    this._recipesDao.find().pipe(
+      filter((_: R[]) => !!_),
+      map((_: R[]) => _[Math.round(Math.random() * _.length)]),
+      map((_: R) => new RecipeEntity(_)),
+      defaultIfEmpty(undefined),
+    );
+
 
   /**
    * Deletes one recipe in people list
