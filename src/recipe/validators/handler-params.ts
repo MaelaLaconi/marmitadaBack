@@ -4,4 +4,6 @@ export class HandlerParams {
   @IsMongoId()
   @IsNotEmpty()
   id:string;
+
+  username:string;
 }

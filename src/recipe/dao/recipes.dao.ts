@@ -65,7 +65,7 @@ export class RecipesDao {
     );
 
   findAllCategory = (): Observable<Recipe[] |void> =>
-    from(this._recipeModel.find().distinct('category')).pipe(
+    from(this._recipeModel.find({}).distinct('category')).pipe(
       filter((docs: RecipeDocument[]) => !!docs && docs.length > 0),
       map((docs: RecipeDocument[]) =>
         docs.map((_: RecipeDocument) => _.toJSON()),
