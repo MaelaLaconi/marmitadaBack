@@ -113,7 +113,6 @@ export class RecipeController {
    *
    * @returns Observable<void>
    */
-
   @ApiNoContentResponse({
     description: 'The recipe has been successfully deleted',
   })
@@ -192,6 +191,7 @@ export class RecipeController {
   create(@Body() recipe: CreateRecipeDto): Observable<RecipeEntity> {
     return this._recipeService.create(recipe);
   }
+
   /**
    * Handler to answer to GET /recipes/:category route
    *
@@ -200,11 +200,11 @@ export class RecipeController {
    * @returns {Observable<RecipeEntity>} Recipe corresponding to the category asked
    */
   @ApiOkResponse({
-    description: 'Return the recipe with the id asked',
+    description: 'Return the recipes with the category asked',
     type: RecipeEntity,
   })
   @ApiNotFoundResponse({
-    description: 'Recipe with the given "id" doesn\'t exists in the database',
+    description: 'Recipe with the given recipy doesn\'t exists in the database',
   })
   @ApiBadRequestResponse({
     description: 'Parameter provided is not valid',
