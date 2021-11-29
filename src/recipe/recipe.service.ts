@@ -102,13 +102,13 @@ export class RecipeService {
    *
    * @returns {Observable<RecipeEntity[] | void>} array with all the recipes or void if there is none
    */
-  findAllCategory = (): Observable<RecipeEntity[] | void> =>
-    this._recipesDao.findAllCategory().pipe(
+  findAllCategories = (): Observable<string[] | void> =>
+    this._recipesDao.findAllCategories().pipe(
       catchError( (e) =>
         throwError(() => new UnprocessableEntityException(e.message)),
       ),
-      filter((_: Recipe[]) => !!_),
-      map((_: Recipe[]) => _.map((__: Recipe) => new RecipeEntity(__))),
+      filter((_: string[]) => !!_),
+      // map((_: string[]) => _.map((__: string) => __)),
       defaultIfEmpty(undefined),
     );
 

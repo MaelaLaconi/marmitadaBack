@@ -237,10 +237,9 @@ export class RecipeController {
   @ApiNoContentResponse({
     description: 'No recipes are in database',
   })
-
-  @Get('/category')
-  findAllCategory(): Observable<Recipe[] | void> {
-    return this._recipeService.findAll();
+  @Get('/categories')
+  findAllCategories(): Observable<String[] | void> {
+    return this._recipeService.findAllCategories();
   }
 
 
