@@ -213,8 +213,8 @@ export class RecipeController {
     description: 'The request can\'t be performed in the database',
   })
   @ApiParam({
-    name: 'id',
-    description: 'Unique identifier of the recipe in the database',
+    name: 'category',
+    description: 'Category of the recipe in the database',
     type: String,
     allowEmptyValue: false,
   })

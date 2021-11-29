@@ -77,7 +77,24 @@ export class RecipeService {
           ),
       ),
     );
-
+  
+  /**
+   * Returns the recipes with the asked category
+   *
+   * @param {string} category of the recipes
+   *
+   * @returns {Observable<RecipeEntity[] | void>}
+   */
+  findByCategory = (category: string): Observable<RecipeEntity[] | void> =>
+    this._recipesDao.findByCategory(category).pipe(
+      catchError( (e) =>
+        throwError(() => new UnprocessableEntityException(e.message)),
+      ),
+      filter((_: Recipe[]) => !!_),
+      map((_: Recipe[]) => _.map((__: Recipe) => new RecipeEntity(__))),
+      defaultIfEmpty(undefined),
+    );
+  
   /**
    * Returns randomly one recipe of the list
    *
@@ -90,7 +107,7 @@ export class RecipeService {
       map((_: Recipe) => new RecipeEntity(_)),
       defaultIfEmpty(undefined),
     );
-
+  
   /**
    * Deletes one recipe in recipes list
    *
@@ -111,7 +128,7 @@ export class RecipeService {
           ),
       ),
     );
-
+  
   /**
    * Update a recipe in recipes list
    *
@@ -140,7 +157,7 @@ export class RecipeService {
           ),
       ),
     );
-
+  
   private _addRecipe = (recipe: CreateRecipeDto): Observable<CreateRecipeDto> =>
     of({
       ...recipe,
@@ -149,7 +166,8 @@ export class RecipeService {
       tap((_: Recipe) => (this._recipes = this._recipes.concat(_))),
       map((_: Recipe) => new RecipeEntity(_)),
     );
-
+  
+  
   /**
    * Creates a new id
    *
@@ -158,17 +176,6 @@ export class RecipeService {
    * @private
    */
   private _createId = (): string => `${new Date().getTime()}`;
-
-
-  findByCategory = (category: string): Observable<RecipeEntity[] | void> =>
-    this._recipesDao.findByCategory(category).pipe(
-      catchError( (e) =>
-        throwError(() => new UnprocessableEntityException(e.message)),
-      ),
-      filter((_: Recipe[]) => !!_),
-      map((_: Recipe[]) => _.map((__: Recipe) => new RecipeEntity(__))),
-      defaultIfEmpty(undefined),
-    );
 
 
 }

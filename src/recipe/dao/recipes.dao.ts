@@ -55,30 +55,15 @@ export class RecipesDao {
    * @returns {Observable<Recipe[] | void>}
    */
 
-
-
-
-  findByCategory = (category: string): Observable<Recipe[] | void> =>
-    from(this._recipeModel.find({})).pipe(
+  findByCategory = (category: string): Observable<Recipe[] |void> =>
+    from(this._recipeModel.find({category: category})).pipe(
       filter((docs: RecipeDocument[]) => !!docs && docs.length > 0),
       map((docs: RecipeDocument[]) =>
-        docs.map((_: RecipeDocument) => _.toJSON() && docs.filter(value => value.category === category),
-          docs.filter((_: Recipe) => _.category === category),
-          ),
+        docs.map((_: RecipeDocument) => _.toJSON()),
       ),
       defaultIfEmpty(undefined),
     );
 
-  /*
-   findByCategory = (category: string): Observable<Recipe[] | void> =>
-    from(this._recipeModel.find({})).pipe(
-      filter((docs: RecipeDocument[]) => !!docs && docs.length > 0),
-      map((docs: RecipeDocument[]) =>
-        docs.map((_: RecipeDocument) => _.toJSON() && docs.filter(value => value.category === category)),
-      ),
-      defaultIfEmpty(undefined),
-    );
-   */
   /**
    * Check if recipe already exists with index and add it in recipes list
    *
