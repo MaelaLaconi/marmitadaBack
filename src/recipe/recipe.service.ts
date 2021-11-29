@@ -8,9 +8,6 @@ import { RECIPES } from '../static/_recipes';
 import {
   catchError,
   defaultIfEmpty,
-  find,
-  findIndex,
-  from,
   mergeMap,
   Observable,
   of,
@@ -91,11 +88,10 @@ export class RecipeService {
       ),
     );
 
-
   /**
    * Returns randomly one recipe of the list
    *
-   * @returns {Observable<PersonEntity | void>}
+   * @returns {Observable<RecipeEntity | void>}
    */
   findRandom = (): Observable<RecipeEntity | void> =>
     this._recipesDao.find().pipe(
@@ -105,18 +101,10 @@ export class RecipeService {
       defaultIfEmpty(undefined),
     );
 
-
   /**
-   * Deletes one recipe in people list
+   * Deletes one recipe in recipes list
    *
    * @param {string} id of the recipe to delete
-   *
-   * @returns {Observable<void>}
-   */
-  /**
-   * Deletes one person in people list
-   *
-   * @param {string} id of the person to delete
    *
    * @returns {Observable<void>}
    */
@@ -129,39 +117,18 @@ export class RecipeService {
         !!_
           ? of(undefined)
           : throwError(
-            () => new NotFoundException(`Person with id '${id}' not found`),
+            () => new NotFoundException(`Recipe with id '${id}' not found`),
           ),
       ),
     );
 
   /**
-   * Finds index of array for current recipe
+   * Update a recipe in recipes list
    *
-   * @param {string} id of the recipe to find
+   * @param {string} id of the recipe to update
+   * @param recipe data to update
    *
-   * @returns {Observable<number>}
-   *
-   * @private
-   */
-  private _findRecipesIndexOfList = (id: string): Observable<number> =>
-    from(this._recipes).pipe(
-      findIndex((_: Recipe) => _.id === id),
-      mergeMap((index: number) =>
-        index > -1
-          ? of(index)
-          : throwError(
-              () => new NotFoundException(`Recipe with id '${id}' not found`),
-            ),
-      ),
-    );
-
-  /**
-   * Update a recipe in people list
-   *
-   * @param {string} id of the person to update
-   * @param person data to update
-   *
-   * @returns {Observable<PersonEntity>}
+   * @returns {Observable<RecipeEntity>}
    */
   update = (id: string, recipe: UpdateRecipeDto): Observable<RecipeEntity> =>
     this._recipesDao.findByIdAndUpdate(id, recipe).pipe(
@@ -183,7 +150,6 @@ export class RecipeService {
           ),
       ),
     );
-
 
   private _addRecipe = (recipe: CreateRecipeDto): Observable<RecipeEntity> =>
     of({

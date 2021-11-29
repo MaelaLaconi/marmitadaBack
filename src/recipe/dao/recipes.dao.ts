@@ -78,9 +78,9 @@ export class RecipesDao {
    * Update a recipe in recipe list
    *
    * @param {string} id
-   * @param {UpdatePersonDto} person
+   * @param {UpdateRecipeDto} recipe
    *
-   * @return {Observable<Person | void>}
+   * @return {Observable<Recipe | void>}
    */
   findByIdAndUpdate = (
     id: string,
