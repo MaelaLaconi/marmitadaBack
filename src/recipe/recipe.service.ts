@@ -203,15 +203,6 @@ export class RecipeService {
           ),
       ),
     );
-  
-  private _addRecipe = (recipe: CreateRecipeDto): Observable<CreateRecipeDto> =>
-    of({
-      ...recipe,
-      id: this._createId(),
-    }).pipe(
-      tap((_: Recipe) => (this._recipes = this._recipes.concat(_))),
-      map((_: Recipe) => new RecipeEntity(_)),
-    );
 
   findAndSort = (sortMethod: string): Observable<Recipe[] | void> =>
     this._recipesDao.findAndSort(sortMethod).pipe(
@@ -220,12 +211,4 @@ export class RecipeService {
       defaultIfEmpty(undefined),
     );
 
-  /**
-   * Creates a new id
-   *
-   * @returns {string}
-   *
-   * @private
-   */
-  private _createId = (): string => `${new Date().getTime()}`;
 }

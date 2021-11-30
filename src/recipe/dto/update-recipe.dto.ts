@@ -15,7 +15,7 @@ export class UpdateRecipeDto {
   @ApiPropertyOptional({
     name: 'category',
     description: 'Category of the recipe',
-    example: 'salty/sweet',
+    example: 'sweet',
     required: false,
   })
   @IsOptional()

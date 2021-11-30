@@ -136,6 +136,15 @@ export class RecipeController {
     return this._recipeService.delete(params.id);
   }
 
+  @ApiBadRequestResponse({
+    description: 'Parameter provided is not good'
+  })
+  @ApiNoContentResponse({
+    description: 'There is no recipes in database'
+  })
+  @ApiUnprocessableEntityResponse({
+    description: 'The request can\'t be performed in the database.'
+  })
   @ApiParam({
     name: 'sortMethod',
     description: 'The way to sort the recipes. ' +
@@ -266,6 +275,7 @@ export class RecipeController {
   findByName(@Param() params: HandlerName): Observable<Recipe[] | void> {
     return this._recipeService.findByName(params.name);
   }
+
   /**
    * Handler to answer to GET /recipes/category route
    *
@@ -301,6 +311,5 @@ export class RecipeController {
   findAllNames(): Observable<String[] | void> {
     return this._recipeService.findAllNames();
   }
-
 
 }

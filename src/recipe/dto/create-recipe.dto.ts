@@ -1,6 +1,6 @@
 import {RecipeAuthorDto} from "./recipe-author.dto";
-import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
-import { IsInstance, IsNotEmpty, IsNumber, IsOptional, IsString, ValidateNested } from "class-validator";
+import { ApiProperty } from "@nestjs/swagger";
+import { IsInstance, IsNotEmpty, IsNumber, IsString, ValidateNested } from "class-validator";
 import {Type} from "class-transformer";
 
 export class CreateRecipeDto {
@@ -8,7 +8,7 @@ export class CreateRecipeDto {
   @ApiProperty({
     name: 'category',
     description: 'Category of the recipe',
-    example: 'salty/sweet',
+    example: 'sweet',
     required: true,
   })
   @IsString()
