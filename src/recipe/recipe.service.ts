@@ -75,6 +75,71 @@ export class RecipeService {
           ),
       ),
     );
+  
+  /**
+   * Returns the recipes with the asked category
+   *
+   * @param {string} category of the recipes
+   *
+   * @returns {Observable<RecipeEntity[] | void>}
+   */
+  findByCategory = (category: string): Observable<RecipeEntity[] | void> =>
+    this._recipesDao.findByCategory(category).pipe(
+      catchError( (e) =>
+        throwError(() => new UnprocessableEntityException(e.message)),
+      ),
+      filter((_: Recipe[]) => !!_),
+      map((_: Recipe[]) => _.map((__: Recipe) => new RecipeEntity(__))),
+      defaultIfEmpty(undefined),
+    );
+
+  /**
+   * Returns the recipes with the asked name
+   *
+   * @param {string} name of the recipes
+   *
+   * @returns {Observable<RecipeEntity[] | void>}
+   */
+  findByName = (name: string): Observable<RecipeEntity[] | void> =>
+    this._recipesDao.findByName(name).pipe(
+      catchError( (e) =>
+        throwError(() => new UnprocessableEntityException(e.message)),
+      ),
+      filter((_: Recipe[]) => !!_),
+      map((_: Recipe[]) => _.map((__: Recipe) => new RecipeEntity(__))),
+      defaultIfEmpty(undefined),
+    );
+
+  /**
+   * Return all the recipes with distinct category in database
+   *
+   * @returns {Observable<RecipeEntity[] | void>} array with all the recipes or void if there is none
+   */
+  findAllCategories = (): Observable<string[] | void> =>
+    this._recipesDao.findAllCategories().pipe(
+      catchError( (e) =>
+        throwError(() => new UnprocessableEntityException(e.message)),
+      ),
+      filter((_: string[]) => !!_),
+      // map((_: string[]) => _.map((__: string) => __)),
+      defaultIfEmpty(undefined),
+    );
+
+
+  /**
+   * Return all the distinct names in the database
+   *
+   * @returns {Observable<RecipeEntity[] | void>} array with all the recipes or void if there is none
+   */
+  findAllNames = (): Observable<string[] | void> =>
+    this._recipesDao.findAllNames().pipe(
+      catchError( (e) =>
+        throwError(() => new UnprocessableEntityException(e.message)),
+      ),
+      filter((_: string[]) => !!_),
+      // map((_: string[]) => _.map((__: string) => __)),
+      defaultIfEmpty(undefined),
+    );
 
   /**
    * Returns randomly one recipe of the list
@@ -137,6 +202,15 @@ export class RecipeService {
             () => new NotFoundException(`People with id '${id}' not found`),
           ),
       ),
+    );
+  
+  private _addRecipe = (recipe: CreateRecipeDto): Observable<CreateRecipeDto> =>
+    of({
+      ...recipe,
+      id: this._createId(),
+    }).pipe(
+      tap((_: Recipe) => (this._recipes = this._recipes.concat(_))),
+      map((_: Recipe) => new RecipeEntity(_)),
     );
 
   findAndSort = (sortMethod: string): Observable<Recipe[] | void> =>

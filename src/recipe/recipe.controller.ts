@@ -30,6 +30,8 @@ import {HandlerParams} from "./validators/handler-params";
 import {CreateRecipeDto} from "./dto/create-recipe.dto";
 import { UpdateRecipeDto } from './dto/update-recipe.dto';
 import {HandlerSortParams} from "./validators/handler-sort-params";
+import { HandlerCategory } from "./validators/handler-category";
+import { HandlerName } from "./validators/handler-name";
 
 @ApiTags('recipes')
 @Controller('recipes')
@@ -105,7 +107,7 @@ export class RecipeController {
   findAll(): Observable<Recipe[] | void> {
     return this._recipeService.findAll();
   }
-  
+
   /**
    * Handler to answer to DELETE /recipes/:id route
    *
@@ -201,6 +203,103 @@ export class RecipeController {
   @Post()
   create(@Body() recipe: CreateRecipeDto): Observable<RecipeEntity> {
     return this._recipeService.create(recipe);
+  }
+
+  /**
+   * Handler to answer to GET /recipes/:category route
+   *
+   * @param {HandlerParams} params list of route params to take recipe category
+   *
+   * @returns {Observable<RecipeEntity>} Recipe corresponding to the category asked
+   */
+  @ApiOkResponse({
+    description: 'Return the recipes with the category asked',
+    type: RecipeEntity,
+  })
+  @ApiNotFoundResponse({
+    description: 'Recipe with the given recipy doesn\'t exists in the database',
+  })
+  @ApiBadRequestResponse({
+    description: 'Parameter provided is not valid',
+  })
+  @ApiUnprocessableEntityResponse({
+    description: 'The request can\'t be performed in the database',
+  })
+  @ApiParam({
+    name: 'category',
+    description: 'Category of the recipe in the database',
+    type: String,
+    allowEmptyValue: false,
+  })
+  @Get('/category/:category')
+  findByCategory(@Param() params: HandlerCategory): Observable<Recipe[] | void> {
+    return this._recipeService.findByCategory(params.category);
+  }
+
+  /**
+   * Handler to answer to GET /recipes/:name route
+   *
+   * @param {HandlerParams} params list of route params to take recipe category
+   *
+   * @returns {Observable<RecipeEntity>} Recipe corresponding to the category asked
+   */
+  @ApiOkResponse({
+    description: 'Return the recipes with the name asked',
+    type: RecipeEntity,
+  })
+  @ApiNotFoundResponse({
+    description: 'Recipe with the given recipy doesn\'t exists in the database',
+  })
+  @ApiBadRequestResponse({
+    description: 'Parameter provided is not valid',
+  })
+  @ApiUnprocessableEntityResponse({
+    description: 'The request can\'t be performed in the database',
+  })
+  @ApiParam({
+    name: 'name',
+    description: 'Name of the recipe in the database',
+    type: String,
+    allowEmptyValue: false,
+  })
+  @Get('/name/:name')
+  findByName(@Param() params: HandlerName): Observable<Recipe[] | void> {
+    return this._recipeService.findByName(params.name);
+  }
+  /**
+   * Handler to answer to GET /recipes/category route
+   *
+   * @returns {Observable<RecipeEntity[] | void>} array of all the known recipes
+   */
+  @ApiOkResponse({
+    description: 'Return all the recipe with distinct category',
+    type: RecipeEntity,
+    isArray: true,
+  })
+  @ApiNoContentResponse({
+    description: 'No recipes are in database',
+  })
+  @Get('/categories')
+  findAllCategories(): Observable<String[] | void> {
+    return this._recipeService.findAllCategories();
+  }
+
+  /**
+   * Handler to answer to GET /recipes/names route
+   *
+   * @returns {Observable<RecipeEntity[] | void>} array of all the known recipes
+   */
+  @ApiOkResponse({
+    description: 'Return all the distinct recipe name',
+    type: RecipeEntity,
+    isArray: true,
+  })
+  @ApiNoContentResponse({
+    description: 'No recipes are in database',
+  })
+  @Get('/names')
+  findAllNames(): Observable<String[] | void> {
+    return this._recipeService.findAllNames();
   }
 
 

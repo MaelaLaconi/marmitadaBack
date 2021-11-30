@@ -6,6 +6,7 @@
 // Insert people array
 db.getCollection('recipes').insertMany([
   {
+    category:'sweet',
     name: 'Tadaramisu',
     description: 'Un dessert italien à base de mascarponne, de biscuit boudoire, de sucre et de café',
     author: {
@@ -38,6 +39,7 @@ db.getCollection('recipes').insertMany([
     cookingTime: 0,
   },
   {
+    category:'salty',
     name: 'Eau tadagazeuse',
     description: 'De l\'eau gazéifié au carbone de diamants',
     author: {
@@ -54,7 +56,7 @@ db.getCollection('recipes').insertMany([
       'Brûler les diamants et récupérer le gaz carbonique dans un ballon.',
       'Refroidir le diamants partis en fûmés pour les compresser dans une bonbonne de votre machine de gazéification de boisson.',
       'Remplir une gourde d\'eau du robinet.',
-      'Gazéifer votre eau du robinet avec votre gaz carbonique de diamant pour obtenir de l\'eau tadagazeuse !',
+      'Gazéifier votre eau du robinet avec votre gaz carbonique de diamant pour obtenir de l\'eau tadagazeuse !',
     ],
     difficulty: 5,
     preparationTime: 120,
