@@ -29,6 +29,7 @@ import {RecipeEntity} from "./entities/recipe.entity";
 import {HandlerParams} from "./validators/handler-params";
 import {CreateRecipeDto} from "./dto/create-recipe.dto";
 import { UpdateRecipeDto } from './dto/update-recipe.dto';
+import {HandlerSortParams} from "./validators/handler-sort-params";
 
 @ApiTags('recipes')
 @Controller('recipes')
@@ -104,7 +105,7 @@ export class RecipeController {
   findAll(): Observable<Recipe[] | void> {
     return this._recipeService.findAll();
   }
-
+  
   /**
    * Handler to answer to DELETE /recipes/:id route
    *
@@ -112,7 +113,6 @@ export class RecipeController {
    *
    * @returns Observable<void>
    */
-
   @ApiNoContentResponse({
     description: 'The recipe has been successfully deleted',
   })
@@ -134,6 +134,17 @@ export class RecipeController {
     return this._recipeService.delete(params.id);
   }
 
+  @ApiParam({
+    name: 'sortMethod',
+    description: 'The way to sort the recipes. ' +
+      'Fill the field in you want to sort on. ' +
+      'Begin with \'-\' to sort descending.'
+  })
+  @Get('/tris/:sortMethod')
+  findAndSort(@Param() params: HandlerSortParams): Observable<RecipeEntity[] | void> {
+    return this._recipeService.findAndSort(params.sortMethod);
+  }
+  
   /**
    * Handler to answer to PUT /recipes/:id route
    *

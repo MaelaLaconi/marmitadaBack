@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import {Injectable} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Recipe, RecipeDocument } from '../schemas/recipe.schema';
 import { Model } from 'mongoose';
 import { defaultIfEmpty, from, Observable } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import {filter, map} from 'rxjs/operators';
 import { RecipeEntity } from '../entities/recipe.entity';
 import { CreateRecipeDto } from '../dto/create-recipe.dto';
 import { UpdateRecipeDto } from "../dto/update-recipe.dto";
@@ -18,8 +18,9 @@ export class RecipesDao {
   constructor(
     @InjectModel(Recipe.name)
     private readonly _recipeModel: Model<RecipeDocument>,
-  ) {}
-
+  ) {
+  }
+  
   /**
    * Call mongoose method, call toJSON on each result and returns RecipeModel[] or undefined
    *
@@ -33,7 +34,7 @@ export class RecipesDao {
       ),
       defaultIfEmpty(undefined),
     );
-
+  
   /**
    * Returns the recipe with the corresponding id
    *
@@ -47,7 +48,7 @@ export class RecipesDao {
       map((doc: RecipeDocument) => doc.toJSON()),
       defaultIfEmpty(undefined),
     );
-
+  
   /**
    * Check if recipe already exists with index and add it in recipes list
    *
@@ -59,7 +60,7 @@ export class RecipesDao {
     from(new this._recipeModel(recipe).save()).pipe(
       map((doc: RecipeDocument) => doc.toJSON()),
     );
-
+  
   /**
    * Delete a recipe in people list
    *
@@ -73,7 +74,7 @@ export class RecipesDao {
       map((doc: RecipeDocument) => doc.toJSON()),
       defaultIfEmpty(undefined),
     );
-
+  
   /**
    * Update a recipe in recipe list
    *
@@ -94,6 +95,15 @@ export class RecipesDao {
     ).pipe(
       filter((doc: RecipeDocument) => !!doc),
       map((doc: RecipeDocument) => doc.toJSON()),
+      defaultIfEmpty(undefined),
+    );
+  
+  findAndSort = (sortMethods: string): Observable<Recipe[] | void> =>
+    from(this._recipeModel.find({}).sort(sortMethods)).pipe(
+      filter((docs: RecipeDocument[]) => !!docs && docs.length >= 0),
+      map((docs: RecipeDocument[]) =>
+        docs.map((_: RecipeDocument) => _.toJSON()),
+      ),
       defaultIfEmpty(undefined),
     );
 }

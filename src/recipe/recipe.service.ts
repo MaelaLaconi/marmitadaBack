@@ -11,7 +11,7 @@ import {
   of,
   throwError,
 } from 'rxjs';
-import {filter, map, tap} from 'rxjs/operators';
+import {filter, map} from 'rxjs/operators';
 import { RecipeEntity } from './entities/recipe.entity';
 import { UpdateRecipeDto } from './dto/update-recipe.dto';
 import {CreateRecipeDto} from "./dto/create-recipe.dto";
@@ -20,13 +20,11 @@ import {Recipe} from './schemas/recipe.schema'
 
 @Injectable()
 export class RecipeService {
-  private _recipes: Recipe[];
 
   /**
    * Constructor of the class
    */
   constructor(private readonly _recipesDao: RecipesDao) {
-    this._recipes = [];
   }
 
   create = (recipe: CreateRecipeDto): Observable<RecipeEntity> =>
@@ -141,13 +139,11 @@ export class RecipeService {
       ),
     );
 
-  private _addRecipe = (recipe: CreateRecipeDto): Observable<CreateRecipeDto> =>
-    of({
-      ...recipe,
-      id: this._createId(),
-    }).pipe(
-      tap((_: Recipe) => (this._recipes = this._recipes.concat(_))),
-      map((_: Recipe) => new RecipeEntity(_)),
+  findAndSort = (sortMethod: string): Observable<Recipe[] | void> =>
+    this._recipesDao.findAndSort(sortMethod).pipe(
+      filter((_: Recipe[]) => !!_),
+      map((_: Recipe[]) => _.map((__: Recipe) => new RecipeEntity(__))),
+      defaultIfEmpty(undefined),
     );
 
   /**
