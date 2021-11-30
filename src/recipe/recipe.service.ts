@@ -112,6 +112,22 @@ export class RecipeService {
       defaultIfEmpty(undefined),
     );
 
+
+  /**
+   * Return all the distinct names in the database
+   *
+   * @returns {Observable<RecipeEntity[] | void>} array with all the recipes or void if there is none
+   */
+  findAllNames = (): Observable<string[] | void> =>
+    this._recipesDao.findAllNames().pipe(
+      catchError( (e) =>
+        throwError(() => new UnprocessableEntityException(e.message)),
+      ),
+      filter((_: string[]) => !!_),
+      // map((_: string[]) => _.map((__: string) => __)),
+      defaultIfEmpty(undefined),
+    );
+
   /**
    * Returns randomly one recipe of the list
    *

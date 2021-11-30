@@ -242,6 +242,23 @@ export class RecipeController {
     return this._recipeService.findAllCategories();
   }
 
+  /**
+   * Handler to answer to GET /recipes/names route
+   *
+   * @returns {Observable<RecipeEntity[] | void>} array of all the known recipes
+   */
+  @ApiOkResponse({
+    description: 'Return all the distinct recipe name',
+    type: RecipeEntity,
+    isArray: true,
+  })
+  @ApiNoContentResponse({
+    description: 'No recipes are in database',
+  })
+  @Get('/names')
+  findAllNames(): Observable<String[] | void> {
+    return this._recipeService.findAllNames();
+  }
 
 
 }
