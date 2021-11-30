@@ -30,6 +30,7 @@ import {HandlerParams} from "./validators/handler-params";
 import {CreateRecipeDto} from "./dto/create-recipe.dto";
 import { UpdateRecipeDto } from './dto/update-recipe.dto';
 import { HandlerCategory } from "./validators/handler-category";
+import { HandlerName } from "./validators/handler-name";
 
 @ApiTags('recipes')
 @Controller('recipes')
@@ -223,7 +224,36 @@ export class RecipeController {
     return this._recipeService.findByCategory(params.category);
   }
 
-
+  /**
+   * Handler to answer to GET /recipes/:name route
+   *
+   * @param {HandlerParams} params list of route params to take recipe category
+   *
+   * @returns {Observable<RecipeEntity>} Recipe corresponding to the category asked
+   */
+  @ApiOkResponse({
+    description: 'Return the recipes with the name asked',
+    type: RecipeEntity,
+  })
+  @ApiNotFoundResponse({
+    description: 'Recipe with the given recipy doesn\'t exists in the database',
+  })
+  @ApiBadRequestResponse({
+    description: 'Parameter provided is not valid',
+  })
+  @ApiUnprocessableEntityResponse({
+    description: 'The request can\'t be performed in the database',
+  })
+  @ApiParam({
+    name: 'name',
+    description: 'Name of the recipe in the database',
+    type: String,
+    allowEmptyValue: false,
+  })
+  @Get('/name/:name')
+  findByName(@Param() params: HandlerName): Observable<Recipe[] | void> {
+    return this._recipeService.findByName(params.name);
+  }
   /**
    * Handler to answer to GET /recipes/category route
    *

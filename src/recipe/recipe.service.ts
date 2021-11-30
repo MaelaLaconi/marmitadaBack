@@ -98,6 +98,23 @@ export class RecipeService {
     );
 
   /**
+   * Returns the recipes with the asked name
+   *
+   * @param {string} name of the recipes
+   *
+   * @returns {Observable<RecipeEntity[] | void>}
+   */
+  findByName = (name: string): Observable<RecipeEntity[] | void> =>
+    this._recipesDao.findByName(name).pipe(
+      catchError( (e) =>
+        throwError(() => new UnprocessableEntityException(e.message)),
+      ),
+      filter((_: Recipe[]) => !!_),
+      map((_: Recipe[]) => _.map((__: Recipe) => new RecipeEntity(__))),
+      defaultIfEmpty(undefined),
+    );
+
+  /**
    * Return all the recipes with distinct category in database
    *
    * @returns {Observable<RecipeEntity[] | void>} array with all the recipes or void if there is none

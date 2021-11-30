@@ -64,6 +64,23 @@ export class RecipesDao {
       defaultIfEmpty(undefined),
     );
 
+  /**
+   * Call mongoose method, call toJSON on each result filter by name and returns RecipeModel[] or undefined
+   *
+   * @returns {Observable<Recipe[] | void>}
+   */
+
+  findByName = (name: string): Observable<Recipe[] |void> =>
+    from(this._recipeModel.find({name: name})).pipe(
+      filter((docs: RecipeDocument[]) => !!docs && docs.length > 0),
+      map((docs: RecipeDocument[]) =>
+        docs.map((_: RecipeDocument) => _.toJSON()),
+      ),
+      defaultIfEmpty(undefined),
+    );
+
+
+
   findAllCategories = (): Observable<string[] | void> =>
     from(this._recipeModel.find().distinct('category')).pipe(
       filter((docs: RecipeDocument[]) => !!docs && docs.length > 0),
