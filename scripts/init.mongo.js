@@ -70,30 +70,6 @@ db.getCollection('recipes').insertMany([
     cookingTime: 0,
   },
   {
-    category:'Pétillant',
-    name: 'Eau tadagazeuse',
-    description: 'De l\'eau gazéifié au carbone de diamants',
-    author: {
-      firstname: 'Nigel',
-      lastname: 'Braun',
-      pseudo: 'NileRed',
-    },
-    ingredients: [
-      '1L d\'eau du robinet',
-      '10g de diamants'
-    ],
-    steps: [
-      'Déposer les diamants dans un tube en quartz.',
-      'Brûler les diamants et récupérer le gaz carbonique dans un ballon.',
-      'Refroidir le diamants partis en fûmés pour les compresser dans une bonbonne de votre machine de gazéification de boisson.',
-      'Remplir une gourde d\'eau du robinet.',
-      'Gazéifier votre eau du robinet avec votre gaz carbonique de diamant pour obtenir de l\'eau tadagazeuse !',
-    ],
-    difficulty: 5,
-    preparationTime: 120,
-    cookingTime: 30,
-  },
-  {
     category: 'Amuse gueule',
     name: 'Tadacras de morue',
     description: 'Amuse gueule antillais à base de morue frit et servis tiède.',
