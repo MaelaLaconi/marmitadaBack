@@ -6,7 +6,7 @@
 // Insert people array
 db.getCollection('recipes').insertMany([
   {
-    category:'sweet',
+    category:'Sucré',
     name: 'Tadragée maison',
     description: 'Comment faire de délicieux dragées à la maison avecs trois fois rien',
     author: {
@@ -36,13 +36,12 @@ db.getCollection('recipes').insertMany([
     preparationTime: 120,
     cookingTime: 20,
   },
-
   {
-    category:'sweet',
+    category:'Dessert',
     name: 'Tadaramisu',
     description: 'Un dessert italien à base de mascarponne, de biscuit boudoire, de sucre et de café',
     author: {
-      pseudo: 'Giuseppe'
+      pseudo: 'Gius'
     },
     ingredients: [
       '3 oeufs',
@@ -71,7 +70,7 @@ db.getCollection('recipes').insertMany([
     cookingTime: 0,
   },
   {
-    category:'salty',
+    category:'Pétillant',
     name: 'Eau tadagazeuse',
     description: 'De l\'eau gazéifié au carbone de diamants',
     author: {
@@ -93,6 +92,115 @@ db.getCollection('recipes').insertMany([
     difficulty: 5,
     preparationTime: 120,
     cookingTime: 30,
+  },
+  {
+    category: 'Amuse gueule',
+    name: 'Tadacras de morue',
+    description: 'Amuse gueule antillais à base de morue frit et servis tiède.',
+    author: {
+      pseudo: 'Jbertin',
+      firstname: '',
+      lastname: '',
+    },
+    ingredients: [
+      '1 oeuf',
+      '20cl de lait',
+      '2 gousses d\'ail',
+      '1 piment rouge frais',
+      '300g de morue déssalée',
+      '250g de farine',
+      '1 sachet de levure chimique',
+      'Thym et persil',
+      'Huile de moteur',
+      '2 échalotes',
+    ],
+    steps: [
+      'Pochez la morue dans une casserole d\'eau non salée pendant 10 minutes.',
+      'Passez-la sous l\'eau froide et émiettez la en retirant toutes les arêtes.',
+      'Pelez et coupez les écalotes et les gousses d\'ail. Mixez le tout avec du persil et du thym.',
+      'Mélangez la morue et le hachis.',
+      'Dans un saladier, mélangez énergiquement la farine, la levure, l\'oeuf et le lait.',
+      'Quand la pâte est bien lisse, ajoutez le piment finement haché et la préparation à base de morue.',
+      'Laissez reposer une heure à température ambiante.',
+      'Faîtes chauffer l\'huile.',
+      'Jetez de petites quantités de pâte dans l\'huile (environ une cuillère à café).',
+      'Laissez cuire les Tadacras jusqu\'à ce qu\'ils soient bien dorés de tout cotés et bien gonflés',
+      'Servez chaud et bon Tadapétits !',
+    ],
+    difficulty: 1,
+    preparationTime: 15,
+    cookingTime: 30,
+  },
+  {
+    category: 'Dessert',
+    name: 'Tadacannelés Bordelais',
+    description: 'Mon envie du moment',
+    author: {
+      pseudo: 'ChefSoisson',
+      firstname: 'Felipe',
+      lastname: 'Chebest',
+    },
+    ingredients: [
+      '50cl de lait entier',
+      '2 oeufs entier',
+      '2 jaunes d\'oeufs',
+      '100g de farine',
+      '180g de sucre',
+      '25g de beurre',
+      '1 gousse de vanille (ou une cuillère à café d\'extrait',
+      '3 cuillères à café de Rhum',
+    ],
+    steps: [
+      'Faire bouillir le lait, le beurre, la vanille égrainée et la gousse.',
+      'Dans un grand récipient, mélanger la farine et le sucre et incorporer énergiquement les 2 oeufs entiers et les 2 jaunes.',
+      'Verser le lait bouillant en mélangeant délicatement afin d\'obtenir une pâte lisse et fluide comme une pâte à crêpes.',
+      'Laisser refroidir et y ajouter le rhum.',
+      'Laisser reposer au réfrigérateur la pâte durant 24h minimum et sortir la pâte 1h avant la cuisson.',
+      'Beurrer soigneuseument les moules (de préférence en cuivre)',
+      'Préchauffer le four à 280°C (thermostat 9).',
+      'Verser la pâte dans les moules et les enfourner à mi-hauteur durant 5 minutes à 280°C puis ramener la température à 180°C (thermostat 6) pour 1h10 à 1h20 de cuisson.',
+      'Attendre que les canelés aient refroidis, démouler et déguster !',
+    ],
+    difficulty: 2,
+    preparationTime: 15,
+    cookingTime: 75,
+  },
+  {
+    category: 'Dessert',
+    name: 'Tadatarte Tadatatin',
+    description: 'Une tarte retournée aux pommes caramélisées.',
+    author: {
+      pseudo: 'Milou',
+      firstname: 'Tatin',
+      lastname: 'Hergé',
+    },
+    ingredients: [
+      '2kg de pommes',
+      '250g de sucre',
+      '125g de beurre doux',
+      '50g de beurre salé',
+      'Cannelle',
+      '1 pâte feuilletée pur beurre',
+    ],
+    steps: [
+      'Fondre 50g de beurre salé dans un moule et le répartir sur toute la surface (fond et bords).',
+      'Chemiser le moule de sucre en laissant le surplus dans le fond sur une couche de 3mm environ et réserver.',
+      'Éplucher les pommes et les couper en 8.',
+      'Dans une poêle, faire fondre 1 bonne cuillère à soupe de beurre doux avec environ 1/2 verre à moutarde de sucre, ajouter une pincée de cannelle, faire blondir et colorer les morceaux de pommes.',
+      'Recommencer plusieurs fois si nécessaire si votre poêle est trop petite pour les contenir tous.',
+      'Ranger harmonieusement les morceaux de pommes dans le moule en les serrant légèrement.',
+      'Couvrir la première rangée de pommes d\'un peu de sucre, de noisettes de beurre et d\'une pincée de cannelle.',
+      'Recommencer l\'opération jusqu\'à épuisement des pommes.',
+      'Sur la dernière couche ajouter environ 3 cuillères à soupe de sirop de cuisson des pommes.',
+      'Cuire à 210°C (thermostat 7) pendant 20 minutes environ.',
+      'Sortir le plat du four et laisser refroidir 30 minutes environ.',
+      'Poser le disque de pâte sur le moule et couper ce qui dépasse.',
+      'Remettre à cuire environ 40 minutes pour cuire la pâte et confire les pommes, mettre du papier aluminium si la pâte brunit trop vite.',
+      'Manger froid ou tiède avec une boule de glace vanille.',
+    ],
+    difficulty: 3,
+    preparationTime: 30,
+    cookingTime: 60,
   },
 ]);
 // display the final initial data
