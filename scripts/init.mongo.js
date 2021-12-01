@@ -7,6 +7,38 @@
 db.getCollection('recipes').insertMany([
   {
     category:'sweet',
+    name: 'Tadragée maison',
+    description: 'Comment faire de délicieux dragées à la maison avecs trois fois rien',
+    author: {
+      pseudo: 'Giuseppe'
+    },
+    ingredients: [
+      'Amandes, si possible bio',
+      'Sucre en poudre',
+      'sucre vanillé (facultatif ou vanille liquide)',
+      'Eau',
+      '1/4 sucre',
+      '1/4 gomme arabique en poudre',
+      '1/2 eau',
+    ],
+    steps: [
+      'Torréfier pendant environ 8 à 9 minutes, les amandes, dans un four préchauffé à 200° en les remuant régulièrement pour unifier la torréfaction.',
+      'Mettre les amandes dans la tadaturbine.',
+      'Dans une casserole, mélanger ensemble le sucre et la gomme arabique, ajouter l\'eau puis porter à ébullition en mélangeant bien pour homogénéiser le sirop.',
+      'Verser un peu de sirop sur les amandes afin de les enrober correctement en laissant tourner la turbine .',
+      'Dans une casserole, porter à ébullition du sucre avec 1/3 de son poids en eau (exemple : 150 g de sucre pour 50 g d\'eau).',
+      'Monter les blancs en neige ferme.',
+      'Ajouter un peu de sucre vanillé (la quantité dépend du goût de chacun)',
+      'A ébullition, retirer du feu',
+      'Obtenir un sirop à 80% de matières sèches en corrigeant, si nécessaire, la concentration par un apport supplémentaire d\'eau ou le prolongement de la cuisson.',
+    ],
+    difficulty: 8,
+    preparationTime: 120,
+    cookingTime: 20,
+  },
+
+  {
+    category:'sweet',
     name: 'Tadaramisu',
     description: 'Un dessert italien à base de mascarponne, de biscuit boudoire, de sucre et de café',
     author: {
@@ -63,6 +95,5 @@ db.getCollection('recipes').insertMany([
     cookingTime: 30,
   },
 ]);
-
 // display the final initial data
 db.getCollection('recipes').find({});
