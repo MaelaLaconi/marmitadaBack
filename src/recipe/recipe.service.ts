@@ -149,7 +149,7 @@ export class RecipeService {
   findRandom = (): Observable<RecipeEntity | void> =>
     this._recipesDao.find().pipe(
       filter((_: Recipe[]) => !!_),
-      map((_: Recipe[]) => _[Math.round(Math.random() * _.length)]),
+      map((_: Recipe[]) => _[Math.floor(Math.random() * _.length)]),
       map((_: Recipe) => new RecipeEntity(_)),
       defaultIfEmpty(undefined),
     );
