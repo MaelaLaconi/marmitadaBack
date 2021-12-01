@@ -79,7 +79,11 @@ export class RecipesDao {
     );
 
 
-
+  /**
+   * Call mongoose method, call toJSON on each category and returns string[] or undefined
+   *
+   * @returns {Observable<string[] | void>}
+   */
   findAllCategories = (): Observable<string[] | void> =>
     from(this._recipeModel.find().distinct('category')).pipe(
       filter((docs: RecipeDocument[]) => !!docs && docs.length > 0),
@@ -87,7 +91,11 @@ export class RecipesDao {
       defaultIfEmpty(undefined),
     );
 
-
+  /**
+   * Call mongoose method, call toJSON on each name and returns string[] or undefined
+   *
+   * @returns {Observable<Recipe[] | void>}
+   */
   findAllNames = (): Observable<string[] | void> =>
     from(this._recipeModel.find().distinct('name')).pipe(
       filter((docs: RecipeDocument[]) => !!docs && docs.length > 0),
@@ -108,7 +116,7 @@ export class RecipesDao {
     );
 
   /**
-   * Delete a recipe in people list
+   * Delete a recipe in recipe list
    *
    * @param {string} id
    *
@@ -143,7 +151,12 @@ export class RecipesDao {
       map((doc: RecipeDocument) => doc.toJSON()),
       defaultIfEmpty(undefined),
     );
-  
+
+
+  /**
+   * Call mongoose method, call toJSON on each resulty, execute a sort and returns RecipeModel[] or undefined
+   * @param sortMethods
+   */
   findAndSort = (sortMethods: string): Observable<Recipe[] | void> =>
     from(this._recipeModel.find({}).sort(sortMethods)).pipe(
       filter((docs: RecipeDocument[]) => !!docs && docs.length >= 0),

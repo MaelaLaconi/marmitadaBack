@@ -53,7 +53,7 @@ export class RecipeController {
     description: 'Returns one recipe randomly',
     type: RecipeEntity,
   })
-  @ApiNoContentResponse({ description: 'No person exists in database' })
+  @ApiNoContentResponse({ description: 'No recipe exists in database' })
   @Get('random')
   findRandom(): Observable<RecipeEntity | void> {
     return this._recipeService.findRandom();
@@ -64,10 +64,10 @@ export class RecipeController {
    *
    * @param {HandlerParams} params list of route params to take recipe id
    *
-   * @returns {Observable<RecipeEntity>} Recipe corresponding to the id asked
+   * @returns {Observable<RecipeEntity>} Recipe corresponding to the given id
    */
   @ApiOkResponse({
-    description: 'Return the recipe with the id asked',
+    description: 'Return the recipe with given id',
     type: RecipeEntity,
   })
   @ApiNotFoundResponse({
@@ -162,7 +162,7 @@ export class RecipeController {
    *
    * @returns Observable<RecipeEntity>
    * @param params
-   * @param updatePersonDto
+   * @param updateRecipeDto
    */
   @ApiOkResponse({
     description: 'The recipe has been successfully updated',
@@ -190,9 +190,9 @@ export class RecipeController {
   @Put(':id')
   update(
     @Param() params: HandlerParams,
-    @Body() updatePersonDto: UpdateRecipeDto,
+    @Body() updateRecipeDto: UpdateRecipeDto,
   ): Observable<RecipeEntity> {
-    return this._recipeService.update(params.id, updatePersonDto);
+    return this._recipeService.update(params.id, updateRecipeDto);
   }
   
   @ApiCreatedResponse({
