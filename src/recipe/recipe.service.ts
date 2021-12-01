@@ -27,6 +27,10 @@ export class RecipeService {
   constructor(private readonly _recipesDao: RecipesDao) {
   }
 
+  /**
+   * create a new recipe and insert it in the database
+   * @param recipe
+   */
   create = (recipe: CreateRecipeDto): Observable<RecipeEntity> =>
     of(recipe).pipe(
       mergeMap((_: CreateRecipeDto) => this._recipesDao.save(_)),
@@ -146,7 +150,6 @@ export class RecipeService {
    *
    * @returns {Observable<RecipeEntity | void>}
    */
-
   findRandom = (): Observable<RecipeEntity | void> =>
     this._recipesDao.find().pipe(
       filter((_: Recipe[]) => !!_),
@@ -206,6 +209,10 @@ export class RecipeService {
       ),
     );
 
+  /**
+   * return all the sorted recipes
+   * @param sortMethod : string with the element to sort
+   */
   findAndSort = (sortMethod: string): Observable<Recipe[] | void> =>
     this._recipesDao.findAndSort(sortMethod).pipe(
       filter((_: Recipe[]) => !!_),
