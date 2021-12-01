@@ -146,6 +146,7 @@ export class RecipeService {
    *
    * @returns {Observable<RecipeEntity | void>}
    */
+
   findRandom = (): Observable<RecipeEntity | void> =>
     this._recipesDao.find().pipe(
       filter((_: Recipe[]) => !!_),
@@ -153,6 +154,7 @@ export class RecipeService {
       map((_: Recipe) => new RecipeEntity(_)),
       defaultIfEmpty(undefined),
     );
+
 
   /**
    * Deletes one recipe in recipes list
