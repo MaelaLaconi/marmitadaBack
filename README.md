@@ -1,73 +1,44 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
-</p>
+# Marmitada API
+API pour le site Marmitada, réalisé par Maéla Laconi et Mathieu Tabary.
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+# Veuillez commencer par faire les installations de l'interface web
+Les instructions d'installations se trouvent ici : [https://github.com/MaelaLaconi/marmitadaFront](https://github.com/MaelaLaconi/marmitadaFront)
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Installation de la base de donnée
+La base de donnée utilisée est mongodb, nous allons faire tourner une instance via docker et accéder aux données via Robo3T.
 
-## Description
+### Mise en place du container docker pour le serveur de la base de donnée
+Avec les droits administrateurs exécutez les instructions suivantes : 
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+```
+docker pull mongo
+docker run --name mongodb -p 27017:27017 -d mongo
+```
+La première ligne va récupérer la dernière version de mongo.
+La seconde ligne va instancier un container docker, nommé mongodb, qui va écouter le port 27017, et qui va exécuter un serveur mongo.
 
-## Installation
+### Population de la base de donnée
+Une fois le container mongodb lancé, ouvrez le logiciel Robo3T (téléchargeable [ici](https://robomongo.org/)).
 
-```bash
-$ npm install
+Dans l'interface Robo3T, connectez vous au serveur mongodb (File -> Connect -> Create -> Save).
+
+Une fois connecté, créez une base de donnée (Sur la connection : Clic-droit -> Create Database -> "marmitada" -> Create).
+
+Sur la base de donnée marmitada : Collection -> Clic-droit -> Create Collection... -> "recipes" -> Create).
+
+Avec la collection créée, pour la populer il va vous falloir copier le contenu du fichier de script [./scripts/init.mongo.js](./scripts/init.mongo.js)
+et le coller dans le shell de robot3T, puis exécuter la requête (touche F5).
+
+Recommencez cette étape avec le contenu du fichier [./scripts/index.mongo.js](./scripts/index.mongo.js)
+
+### Lancement de l'application Nest
+Avec la base de donnée en cours d'exécution et initialisée, exécutez les commandes suivantes : 
+
+```
+git clone https://github.com/MaelaLaconi/marmitadaBack.git
+cd marmitadaBack
+yarn global add @nestjs/cli
+yarn install
+yarn run start
 ```
 
-## Running the app
-
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
-```
-
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
