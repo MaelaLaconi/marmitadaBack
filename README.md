@@ -3,7 +3,7 @@ API pour le site Marmitada, réalisé par Maéla Laconi et Mathieu Tabary.
 
 # Veuillez commencer par faire les installations de l'interface web
 Les instructions d'installations se trouvent ici : [https://github.com/MaelaLaconi/marmitadaFront](https://github.com/MaelaLaconi/marmitadaFront)
-La documentation se trouve ici [http://localhost:3000/documentation] (http://localhost:3000/documentation)
+La documentation se trouve ici [http://localhost:3000/documentation/static/index.html](http://localhost:3000/documentation/static/index.html)
 
 ## Installation de la base de donnée
 La base de donnée utilisée est mongodb, nous allons faire tourner une instance via docker et accéder aux données via Robo3T.
